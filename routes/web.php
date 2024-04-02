@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RecipeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,10 +14,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-Route::get('/cousine', function () {
-    $list=["imageSource" => "", "cardTitle" => "Tytuł", "cardText"=>"tekst"];
-    return view('courseList',$list);
-});
+Route::get('/', 'App\Http\Controllers\RecipeController@showHome');
+Route::get('/cousine', 'App\Http\Controllers\RecipeController@showRecipes');
+//Route::get('/cousine', [RecipeController::class, 'show']);
