@@ -2,7 +2,7 @@
 @section("content")
 <div class = "main-wrapper">
     <div class="recipe-search-bar">
-        <input type="text">Search recipe</input>
+        <input type="text" action=>Search recipe</input>
     </div>
     <div class="recipe-search-results">
         <div class="recipe-card">
