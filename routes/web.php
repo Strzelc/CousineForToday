@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\MainController;
 use App\Http\Controllers\RecipeController;
 
 /*
@@ -14,6 +15,6 @@ use App\Http\Controllers\RecipeController;
 |
 */
 
-Route::get('/', 'App\Http\Controllers\RecipeController@showHome');
-Route::get('/cousine', 'App\Http\Controllers\RecipeController@showRecipes');
+Route::get('/', 'App\Http\Controllers\MainController@showHome');
+Route::get('/cousine', 'App\Http\Controllers\Page\ApiController@GetRecipes');
 //Route::get('/cousine', [RecipeController::class, 'show']);
