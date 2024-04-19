@@ -1,38 +1,42 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Model;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use app\Models\Recipe;
+use App\Models\Recipe;
 
 class RecipeController extends Controller
 {
-    public function index() {
+    public static function index() {
         $recipe = Recipe::all();
-        return response()->json($recipe);
+        return $recipe;
     }
 
-    public function store(Request $request) {
+    public static function store(Request $request) {
         $recipe = new Recipe;
         $recipe->title=$request->title;
         $recipe->preparation=$request->preparation;
         $recipe->ingredients=$request->ingredients;
         $recipe->imagesUrls=$request->imagesUrls;
-        return response()->json(['message'=>'recipe saved'],201);
+        //return response()->json(['message'=>'recipe saved'],201);
+        return $recipe;
     }
 
-    public function show($id) {
+    public static function show($id) {
         $recipe = Recipe::find($id);
+        /*
         if(empty($recipe)) {
             return response()->json(['message'=>'recipe not found'],404);
         }
         else {
             return response()->json($recipe);
         }
+        */
+        return $recipe;
     }
 
-    public function update(Request $request ){
+    public static function update(Request $request ){
         
     }
     /*

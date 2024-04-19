@@ -3,17 +3,17 @@
 namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\RecipeController;
+use App\Http\Controllers\Model\RecipeController;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 
-class API extends Controller
+class ApiController extends Controller
 {
-    public function GetRecipes() {
-        $list= index();
-        return $list;
+    public function GetAllRecipes() {
+        $allRecipes= RecipeController::index();
+        return response()->json($allRecipes);
     }
     /*private function searchForRecipe($word) {
         $list= DB::table('recipes')->get()->select(['title','preparation','ingredients','images_urls'])->toJson();
