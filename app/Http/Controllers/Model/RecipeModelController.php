@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Recipe;
 
-class RecipeController extends Controller
+class RecipeModelController extends Controller
 {
     public static function index() {
         $recipe = Recipe::all();

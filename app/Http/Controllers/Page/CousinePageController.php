@@ -4,8 +4,11 @@ namespace App\Http\Controllers\Page;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Model\RecipeController;
 
 class CousinePageController extends Controller
 {
-    //
+    public function showPage() {
+        return view('recipeList');
+    }
 }

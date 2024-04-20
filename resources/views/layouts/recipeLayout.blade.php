@@ -4,7 +4,7 @@
     
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    @vite(['resources/css/app.css','resources/scss/app.scss'])
+    @vite(['resources/css/app.css','resources/scss/app.scss','resources/js/makeRecipeList.js'])
 </head>
 <body>
 @yield("content")

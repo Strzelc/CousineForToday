@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Model\RecipeController;
+use App\Http\Controllers\Model\RecipeModelController;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 class ApiController extends Controller
 {
     public function GetAllRecipes() {
-        $allRecipes= RecipeController::index();
+        $allRecipes= RecipeModelController::index();
         return response()->json($allRecipes);
     }
     /*private function searchForRecipe($word) {
