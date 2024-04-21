@@ -8,9 +8,9 @@ use App\Models\Recipe;
 
 class RecipeModelController extends Controller
 {
-    public static function index() {
-        $recipe = Recipe::all();
-        return $recipe;
+    public static function index($columns = ['*']) {
+        $recipes = Recipe::all($columns);
+        return $recipes;
     }
 
     public static function store(Request $request) {
@@ -23,8 +23,8 @@ class RecipeModelController extends Controller
         return $recipe;
     }
 
-    public static function show($id) {
-        $recipe = Recipe::find($id);
+    public static function show($id,$columns = ['*']) {
+        $recipe = Recipe::find($id,$columns);
         /*
         if(empty($recipe)) {
             return response()->json(['message'=>'recipe not found'],404);

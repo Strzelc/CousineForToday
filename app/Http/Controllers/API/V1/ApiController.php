@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 class ApiController extends Controller
 {
     public function GetAllRecipes() {
-        $allRecipes= RecipeModelController::index();
+        $allRecipes= RecipeModelController::index(['title','ingredients','preparation','images_urls']);
         return response()->json($allRecipes);
     }
     /*private function searchForRecipe($word) {

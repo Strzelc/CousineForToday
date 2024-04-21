@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('title');
             $table->longText('preparation');
             $table->json('ingredients');
-            $table->json('imagesUrls');
+            $table->json('images_urls');
         });
     }
 
