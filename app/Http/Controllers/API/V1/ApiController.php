@@ -15,6 +15,10 @@ class ApiController extends Controller
         $allRecipes= RecipeModelController::index(['title','ingredients','preparation','images_urls']);
         return response()->json($allRecipes);
     }
+    public function SearchForRecipes(Request $request) {
+        $recipes = RecipeController::search($request->title,$request->preparation,$request->ingredients);
+        return response()->json($recipes);
+    }
     /*private function searchForRecipe($word) {
         $list= DB::table('recipes')->get()->select(['title','preparation','ingredients','images_urls'])->toJson();
         return $list;
