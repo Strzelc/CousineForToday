@@ -13,7 +13,7 @@ class RecipeModelController extends Controller
         return $recipes;
     }
 
-    public static function store($title="title",$preparation='preparation',$ingredients=[],$imagesUrls=[]) {
+    public static function store($request,$title="title",$preparation='preparation',$ingredients=[],$imagesUrls=[]) {
         $recipe = new Recipe;
         $recipe->title=$request->title;
         $recipe->preparation=$request->preparation;
@@ -41,7 +41,8 @@ class RecipeModelController extends Controller
     }
 
     public static function search($title='*',$preparation='*',$ingredients=['*']) {
-        $recipes = Recipe::where('title','=',$title)->where('preparation','=',$preparation)->whereJsonContains('ingredients',$ingredients)->get();
+        //$recipes = Recipe::where('title','=',$title)->where('preparation','=',$preparation)->whereJsonContains('ingredients',$ingredients)->get();
+        $recipes = Recipe::where('title','=',$title)->get();
         return $recipes;
     }
     /*

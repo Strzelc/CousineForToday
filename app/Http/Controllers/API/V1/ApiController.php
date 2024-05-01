@@ -16,7 +16,13 @@ class ApiController extends Controller
         return response()->json($allRecipes);
     }
     public function SearchForRecipes(Request $request) {
-        $recipes = RecipeController::search($request->title,$request->preparation,$request->ingredients);
+        //$bodyContent = $request->getContent();
+        $message = 'title: ';
+        $message .=$request->input('title');
+        error_log($message);
+        //error_log($request);
+        //echo($request->input('title'));
+        $recipes = RecipeModelController::search($request->input('title'));
         return response()->json($recipes);
     }
     /*private function searchForRecipe($word) {

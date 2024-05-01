@@ -20,3 +20,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('/AllRecipes', 'App\Http\Controllers\API\V1\ApiController@GetAllRecipes');
+Route::post('/SearchForRecipes','App\Http\Controllers\API\V1\ApiController@SearchForRecipes');
