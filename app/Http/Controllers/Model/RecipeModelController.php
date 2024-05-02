@@ -13,45 +13,73 @@ class RecipeModelController extends Controller
         return $recipes;
     }
 
-    public static function store($request,$title="title",$preparation='preparation',$ingredients=[],$imagesUrls=[]) {
+    public static function store($title='*',$preparation='*',$ingredients=['*'],$imagesUrls=['*']) {
         $recipe = new Recipe;
-        $recipe->title=$request->title;
-        $recipe->preparation=$request->preparation;
-        $recipe->ingredients=$request->ingredients;
-        $recipe->imagesUrls=$request->imagesUrls;
-        //return response()->json(['message'=>'recipe saved'],201);
-        return $recipe;
+        $recipe->title=$title;
+        $recipe->preparation=$preparation;
+        $recipe->ingredients=$ingredients;
+        $recipe->imagesUrls=$imagesUrls;
+        $recipe->save();
     }
 
     public static function show($id,$columns = ['*']) {
         $recipe = Recipe::find($id,$columns);
-        /*
-        if(empty($recipe)) {
-            return response()->json(['message'=>'recipe not found'],404);
-        }
-        else {
-            return response()->json($recipe);
-        }
-        */
         return $recipe;
     }
 
-    public static function update($request ){
-        
+    public static function update($id=null,$title='*',$preparation='*',$ingredients=['*'],$imagesUrls=['*']){
+        if($id!=null&&$id<0) {
+            return 'Bad ID';
+        }
+        else {
+            $recipe = Recipe::find($id);
+
+            if($title!='*') 
+                $recipe-> title=$title;
+    
+            if($preparation != '*') {
+                $recipe-> preparation=$preparation;
+            }
+    
+            if($ingredients != ['*']) {
+                $recipe-> ingredients=$ingredients;
+            }
+    
+            if($imagesUrls != ['*']) {
+                $recipe-> imagesUrls=$imagesUrls;
+            }
+            $recipe->save();
+        }
     }
 
-    public static function search($title='*',$preparation='*',$ingredients=['*']) {
-        //$recipes = Recipe::where('title','=',$title)->where('preparation','=',$preparation)->whereJsonContains('ingredients',$ingredients)->get();
-        $recipes = Recipe::where('title','=',$title)->get();
+    public static function search($title='*',$preparation='*',$ingredients=['*'],$imagesUrls=['*']) {
+        $recipes = null;
+        if($title!='*') 
+            $recipes = Recipe::where('title',$title);
+
+        if($preparation != '*') {
+            if($recipes == null)
+                $recipes = Recipe::where('preparation', $preparation);
+            else 
+                $recipes = $recipes -> where('preparation', $preparation);
+        }
+
+        if($ingredients != ['*']) {
+            if($recipes == null)
+                $recipes = Recipe::whereJsonContains('ingredients', $ingredients);
+            else
+                $recipes = $recipes -> whereJsonContains('ingredients', $ingredients);
+        }
+
+        if($imagesUrls != ['*']) {
+            if($recipes == null)
+                $recipes = Recipe::whereJsonContains('ingredients', $imagesUrls);
+            else
+                $recipes = $recipes -> whereJsonContains('ingredients', $imagesUrls);
+        }
+
+        $recipes = $recipes -> get();
+        
         return $recipes;
     }
-    /*
-    public function showRecipes() {
-        $list=["imageSource" => "", "cardTitle" => "Tytuł", "cardText"=>"tekst"];
-        return view('recipeList',$list);
-    }
-    public function searchForRecipes($parameters) {
-        $results=DB::table('recipes')->where('title')->get();
-        return view('recipeList',$results);
-    }*/
 }
