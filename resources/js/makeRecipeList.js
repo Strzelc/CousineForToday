@@ -3,13 +3,18 @@
 /////////////////////////////////
 const ImgsRootPath = "../static/images/" //TODO - create imgs folder
 const RecipeListDOM = document.querySelector('.recipe-list');
+const RootURL = document.location.origin.concat('/');
 
 /////////////////////////////////
 //Utility functions
 /////////////////////////////////
-function CreateRecipeCard (cardImageSource,cardTitleText,cardTextText){
+function CreateRecipeCard (cardId,cardImageSource,cardTitleText,cardTextText){
+    const  cardLink = document.createElement("a");
+    cardLink.href = RootURL+"recipe/"+cardId.toString();
+
     const card = document.createElement("div");
     card.classList.add("recipe-card");  
+    cardLink.appendChild(card);
     
     const cardImage = document.createElement("img");
     cardImage.setAttribute("src",cardImageSource);
@@ -26,41 +31,55 @@ function CreateRecipeCard (cardImageSource,cardTitleText,cardTextText){
     cardText.textContent=cardTextText;
     card.appendChild(cardText);
 
-    return card;
+    return cardLink;
 }
 
 function CreateRecipeCards(cardsProperties) {
     if(cardsProperties==null) {
-        const card = CreateRecipeCard(ImgsRootPath + "default.jpg","Title","Lorem ipsum");
+        const card = CreateRecipeCard(0,ImgsRootPath + "default.jpg","Title","Lorem ipsum");
         RecipeListDOM.appendChild(card);
     }
     else {
         cardsProperties.forEach(element => {
-            const card = CreateRecipeCard(element.images_urls[0],element.title,element.preparation);
+            const card = CreateRecipeCard(element.id, element.images_urls[0],element.title,element.preparation);
             RecipeListDOM.appendChild(card);
         });
     }
     RecipeListDOM.style.width=100*(RecipeListDOM.children.length)+'%';
 }
 /////////////////////////////////
-//Functions that retrieve data from API. Can be called outside from script 
+//Functions that retrieve data from API. Can be called outside of script 
 /////////////////////////////////
-function ShowSearchedRecipes(form) {
-    const APIurl = "api/SearchForRecipes";
+function ShowAllRecipes() {
+    const APIurl = RootURL+"api/AllRecipes";
+    fetch(APIurl)
+    
+    .then((response) => {
+        return (response.ok) ? response.json() : null
+    })
+
+    .then((data) => {
+        CreateRecipeCards(data);
+    })
+}
+
+function ShowSearchedRecipes(form) { 
+    const APIurl =  RootURL+"api/SearchForRecipes";
     const HTML_SearchFormElement = document.querySelector('.recipe-list');
     var formData=new FormData(form);
 
     fetch(URL=APIurl, {
-    
     body:JSON.stringify(Object.fromEntries(formData.entries())),
     headers: {
     'Content-type':  'application/json'
     },
     method: "POST"
     })
+
     .then((response) => {
       return (response.ok) ? response.json() : null
     })
+
     .then((data) => {
       HTML_SearchFormElement.replaceChildren();
       if(data!=null)
@@ -74,19 +93,11 @@ function ShowSearchedRecipes(form) {
             }
     })
 }
-function ShowAllRecipes() {
-    const APIurl = "api/AllRecipes";
-    fetch(APIurl)
-    .then((response) => {
-        return (response.ok) ? response.json() : null
-    })
-    .then((data) => {
-        CreateRecipeCards(data);
-    })
-}
+
 /////////////////////////////////
 //Execution starts here
 /////////////////////////////////
 window.ShowSearchedRecipes = ShowSearchedRecipes;
+window.ShowAllRecipes = ShowAllRecipes;
 ShowAllRecipes();
 
