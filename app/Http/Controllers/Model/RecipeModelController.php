@@ -13,7 +13,7 @@ class RecipeModelController extends Controller
         return $recipes;
     }
 
-    public static function store($title='*',$preparation='*',$ingredients=['*'],$imagesUrls=['*']) {
+    public static function create($title='*',$preparation='*',$ingredients=['*'],$imagesUrls=['*']) {
         $recipe = new Recipe;
         $recipe->title=$title;
         $recipe->preparation=$preparation;
@@ -52,26 +52,26 @@ class RecipeModelController extends Controller
         }
     }
 
-    public static function search($title='*',$preparation='*',$ingredients=['*'],$imagesUrls=['*']) {
+    public static function search($title='*',$preparation='*',$ingredients=['*'],$imagesUrls=['*']) { 
         $recipes = null;
-        if($title!='*') 
+        if($title!='*')  
             $recipes = Recipe::where('title',$title);
 
-        if($preparation != '*') {
+        if($preparation != '*') { 
             if($recipes == null)
                 $recipes = Recipe::where('preparation', $preparation);
             else 
                 $recipes = $recipes -> where('preparation', $preparation);
         }
 
-        if($ingredients != ['*']) {
+        if($ingredients != ['*']) { 
             if($recipes == null)
                 $recipes = Recipe::whereJsonContains('ingredients', $ingredients);
             else
                 $recipes = $recipes -> whereJsonContains('ingredients', $ingredients);
         }
 
-        if($imagesUrls != ['*']) {
+        if($imagesUrls != ['*']) { 
             if($recipes == null)
                 $recipes = Recipe::whereJsonContains('ingredients', $imagesUrls);
             else

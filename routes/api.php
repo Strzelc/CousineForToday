@@ -18,6 +18,10 @@ use App\Http\Controllers\API\V1\ApiModelController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-
+//Recipes
 Route::get('/AllRecipes', 'App\Http\Controllers\API\V1\ApiController@GetAllRecipes');
 Route::post('/SearchForRecipes','App\Http\Controllers\API\V1\ApiController@SearchForRecipes');
+//Ingredients
+Route::get('/AllIngredientsNames', 'App\Http\Controllers\API\V1\ApiController@GetAllIngredientsNames');
+Route::post('/SearchForIngredients','App\Http\Controllers\API\V1\ApiController@SearchForIngredients');
+

@@ -65,7 +65,7 @@ function ShowAllRecipes() {
 
 function ShowSearchedRecipes(form) { 
     const APIurl =  RootURL+"api/SearchForRecipes";
-    const HTML_SearchFormElement = document.querySelector('.recipe-list');
+    const RecipeListDOM = document.querySelector('.recipe-list');
     var formData=new FormData(form);
 
     fetch(URL=APIurl, {
@@ -81,7 +81,7 @@ function ShowSearchedRecipes(form) {
     })
 
     .then((data) => {
-      HTML_SearchFormElement.replaceChildren();
+      RecipeListDOM.replaceChildren();
       if(data!=null)
         if(data.length!=0)
             CreateRecipeCards(data);
@@ -89,7 +89,7 @@ function ShowSearchedRecipes(form) {
             {
                 const noProductNotification = document.createElement("p");
                 noProductNotification.innerHTML+="No recipes found!";
-                HTML_SearchFormElement.appendChild(noProductNotification);
+                RecipeListDOM.appendChild(noProductNotification);
             }
     })
 }

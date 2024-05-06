@@ -8,7 +8,9 @@ export default defineConfig({
                 'resources/scss/app.scss',
                 'resources/js/app.js',
                 'resources/js/makeRecipeList.js',
-                'resources/css/app.css'
+                'resources/js/addRecipe.js',
+                'resources/js/addIngretient.js',
+                'resources/css/app.css',
         ],
             refresh: true,
         }),

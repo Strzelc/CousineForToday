@@ -11,4 +11,7 @@ class CousinePageController extends Controller
     public function showPage() {
         return view('recipeList');
     }
+    public function addRecipe() {
+        return view('addRecipe');
+    }
 }

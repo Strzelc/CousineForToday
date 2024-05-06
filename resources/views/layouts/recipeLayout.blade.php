@@ -4,9 +4,15 @@
     
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    @vite(['resources/css/app.css','resources/scss/app.scss','resources/js/makeRecipeList.js'])
+    @vite(['resources/css/app.css','resources/scss/app.scss'])
+    @php($rootURL='http://127.0.0.1:8000/')
 </head>
 <body>
-@yield("content")
+<div class="top-bar">
+    <a href='{{$rootURL . 'login'}}'>Login</a>
+    <a href='{{$rootURL . 'cousine'}}'>Recipes</a>
+    <a href='{{$rootURL . 'cousine/addRecipe'}}'>Add Recipe</a>
+</div>
+    @yield("mainContent")
 </body>
 </html>

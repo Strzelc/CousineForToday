@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->string('name');
-            $table->string('default_unit');
             $table->json('avaiable_units');
             //nutriens
             $table->float('water');
