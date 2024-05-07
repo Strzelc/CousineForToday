@@ -10,5 +10,5 @@ class Ingredient extends Model
 {
     use HasFactory;
     use Searchable;
-    protected $fillable = ['name','default_unit','avaiable_units','water','energy','protein','fat','carbohydrate','fiber','sugars','cink'];
+    protected $fillable = ['name','avaiable_units','water','energy','protein','fat','carbohydrate','fiber','sugars','cink'];
 }

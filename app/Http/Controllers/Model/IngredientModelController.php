@@ -14,11 +14,10 @@ class IngredientModelController extends Controller
         return $ingredients;
     }
 
-    public static function create($name = '*', $default_unit = '*', $avaiable_units = ['*'], $water = '*', $energy = '*', $protein = '*', $fat = '*', $carbohydrate = '*', $fiber = '*', $sugars = '*', $cink = '*')
+    public static function create($name = '*', $avaiable_units = ['*'], $water = '*', $energy = '*', $protein = '*', $fat = '*', $carbohydrate = '*', $fiber = '*', $sugars = '*', $cink = '*')
     {
         $ingredient = new Ingredient;
         $ingredient->name = $name;
-        $ingredient->default_unit = $default_unit;
         $ingredient->avaiable_units = $avaiable_units;
         $ingredient->water = $water;
         $ingredient->water = $energy;
@@ -37,7 +36,7 @@ class IngredientModelController extends Controller
         return $ingredients;
     }
 
-    public static function update($id = null, $name = '*', $default_unit = "*", $avaiable_units = ['*'], $water = -1, $energy = -1, $protein = -1, $fat = -1, $carbohydrate = -1, $fiber = -1, $sugars = -1, $cink = -1)
+    public static function update($id = null, $name = '*', $avaiable_units = ['*'], $water = -1, $energy = -1, $protein = -1, $fat = -1, $carbohydrate = -1, $fiber = -1, $sugars = -1, $cink = -1)
     {
         if ($id != null && $id < -1) {
             return 'Bad ID';
@@ -51,10 +50,6 @@ class IngredientModelController extends Controller
 
             if ($name !=-1)
                 $ingredient->name = $name;
-
-            if ($default_unit != -1) {
-                $ingredient->default_unit = $default_unit;
-            }
 
             if ($avaiable_units != ['*']) {
                 $ingredient->avaiable_units = $avaiable_units;

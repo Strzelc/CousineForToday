@@ -2,56 +2,43 @@
 @section("mainContent")
 @vite(['resources/js/addIngredient.js'])
 <div class = "main-wrapper">
-
-    <form method="post" action="/api/SearchForRecipe" id="formElem">
+<form action="/api/crate-new-ingredient" method="post" id="main-form">
         <div>Name:
             <input type="text" name="name">
         </div>
-        <div>Avaiable Units:
-            <fieldset name="avaiable_units">
-                <input type="text" name="avaiable_unit1-name">
-                <input type="text" name="avaiable_unit1-converion_rate">
-            </fieldset>
-            
+        <div id="all-units">Avaiable Units:
+            <div name="unit-div">
+                <input type="text" name="name">
+                <input type="number" name="conversion_rate" step="0.000001">
+            </div>
         </div>
+        <button type="button" onclick="AddUnitToForm()">Add another unit</button>
+        <p>Nutritions [Grams]</p>
         <div>water:
-            <input type="text" name="water">
+            <input type="number" name="water" step="0.000001">
         </div>
-        <div>Name:
-            <input type="text" name="name">
+        <div>energy:
+            <input type="number" name="energy" step="0.000001">
         </div>
-        <div>Name:
-            <input type="text" name="name">
+        <div>protein:
+            <input type="number" name="protein" step="0.000001">
         </div>
-        <div>Name:
-            <input type="text" name="name">
+        <div>fat:
+            <input type="number" name="fat" step="0.000001">
         </div>
-        <div>Name:
-            <input type="text" name="name">
+        <div>Carbohydrate:
+            <input type="number" name="carbohydrate" step="0.000001">
         </div>
-        <div>Name:
-            <input type="text" name="name">
+        <div>Fiber:
+            <input type="number" name="fiber" step="0.000001"> 
         </div>
-        <div>Name:
-            <input type="text" name="name">
+        <div>Sugars:
+            <input type="number" name="sugars" step="0.000001">
         </div>
-        <div>Name:
-            <input type="text" name="name">
+        <div>Cink:
+            <input type="number" name="cink" step="0.000001">
         </div>
-        <div>Name:
-            <input type="text" name="name">
-        </div>
-        
-        <input type="text" name="default_unit">
-        <input type="text" name="avaiable_units">
-        <input type="text" name="water">
-        <input type="text" name="naenergyme">
-        <input type="text" name="protein">
-        <input type="text" name="fat">
-        <input type="text" name="carbohydrate">
-        <input type="text" name="fiber">
-        <input type="text" name="sugars">
-        <input type="text" name="cink">
-    </form>
+        <input type="submit" onclick="OrderUnitsPropertiesNames()" value="Add ingredient">
+        </form>     
 </div>
 @endsection

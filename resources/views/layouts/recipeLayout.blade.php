@@ -12,6 +12,7 @@
     <a href='{{$rootURL . 'login'}}'>Login</a>
     <a href='{{$rootURL . 'cousine'}}'>Recipes</a>
     <a href='{{$rootURL . 'cousine/addRecipe'}}'>Add Recipe</a>
+    <a href='{{$rootURL . 'cousine/addIngredient'}}'>Add Ingredient</a>
 </div>
     @yield("mainContent")
 </body>

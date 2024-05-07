@@ -17,3 +17,4 @@ use App\Http\Controllers\MainController;
 Route::get('/', 'App\Http\Controllers\MainController@showHome');
 Route::get('/cousine', 'App\Http\Controllers\Page\CousinePageController@showPage');
 Route::get('/cousine/addRecipe', 'App\Http\Controllers\Page\CousinePageController@addRecipe');
+Route::get('/cousine/addIngredient', 'App\Http\Controllers\Page\CousinePageController@addIngredient');

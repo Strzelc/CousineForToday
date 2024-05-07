@@ -9,7 +9,7 @@ export default defineConfig({
                 'resources/js/app.js',
                 'resources/js/makeRecipeList.js',
                 'resources/js/addRecipe.js',
-                'resources/js/addIngretient.js',
+                'resources/js/addIngredient.js',
                 'resources/css/app.css',
         ],
             refresh: true,
