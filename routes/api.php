@@ -21,7 +21,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //Recipes
 Route::get('/AllRecipes', 'App\Http\Controllers\API\V1\ApiController@GetAllRecipes');
 Route::post('/SearchForRecipes','App\Http\Controllers\API\V1\ApiController@SearchForRecipes');
+Route::post('/AddRecipe','App\Http\Controllers\API\V1\ApiController@AddRecipe');
 //Ingredients
 Route::get('/AllIngredientsNames', 'App\Http\Controllers\API\V1\ApiController@GetAllIngredientsNames');
 Route::post('/SearchForIngredients','App\Http\Controllers\API\V1\ApiController@SearchForIngredients');
+Route::post('/crate-new-ingredient','App\Http\Controllers\API\V1\ApiController@CrateNewIngredient');
+//Debug
+Route::post('/Debug','App\Http\Controllers\API\V1\ApiController@Debug');
 

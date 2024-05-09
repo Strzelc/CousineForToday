@@ -13,6 +13,7 @@
     <a href='{{$rootURL . 'cousine'}}'>Recipes</a>
     <a href='{{$rootURL . 'cousine/addRecipe'}}'>Add Recipe</a>
     <a href='{{$rootURL . 'cousine/addIngredient'}}'>Add Ingredient</a>
+    <div class="messagae">{{$TopBarMessage}}</div>
 </div>
     @yield("mainContent")
 </body>

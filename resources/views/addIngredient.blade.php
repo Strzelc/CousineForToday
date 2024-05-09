@@ -8,8 +8,8 @@
         </div>
         <div id="all-units">Avaiable Units:
             <div name="unit-div">
-                <input type="text" name="name">
-                <input type="number" name="conversion_rate" step="0.000001">
+                <input type="text" name="name" value="gram">
+                <input type="number" name="conversion_rate" step="0.000001" value="1">
             </div>
         </div>
         <button type="button" onclick="AddUnitToForm()">Add another unit</button>

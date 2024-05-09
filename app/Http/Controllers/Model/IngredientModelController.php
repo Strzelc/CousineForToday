@@ -14,76 +14,79 @@ class IngredientModelController extends Controller
         return $ingredients;
     }
 
-    public static function create($name = '*', $avaiable_units = ['*'], $water = '*', $energy = '*', $protein = '*', $fat = '*', $carbohydrate = '*', $fiber = '*', $sugars = '*', $cink = '*')
+    public static function create(string $name = '*', array $avaiable_units = ['*'], float $water = 0, float $energy = 0, float $protein = 0, float $fat = 0, float $carbohydrate = 0, float $fiber = 0, float $sugars = 0, float $cink = 0)
     {
         $ingredient = new Ingredient;
         $ingredient->name = $name;
-        $ingredient->avaiable_units = $avaiable_units;
+        //error_log(json_encode($avaiable_units));
+        $ingredient->avaiable_units = json_encode($avaiable_units);
         $ingredient->water = $water;
-        $ingredient->water = $energy;
-        $ingredient->water = $protein;
-        $ingredient->water = $fat;
-        $ingredient->water = $carbohydrate;
-        $ingredient->water = $fiber;
-        $ingredient->water = $sugars;
-        $ingredient->water = $cink;
+        $ingredient->energy = $energy;
+        $ingredient->protein = $protein;
+        $ingredient->fat = $fat;
+        $ingredient->carbohydrate = $carbohydrate;
+        $ingredient->fiber = $fiber;
+        $ingredient->sugars = $sugars;
+        $ingredient->cink = $cink;
         $ingredient->save();
+        return "OK";
     }
 
-    public static function show($id, $columns = ['*'])
+    public static function show(int $id, array $columns = ['*'])
     {
         $ingredients = Ingredient::find($id, $columns);
         return $ingredients;
     }
 
-    public static function update($id = null, $name = '*', $avaiable_units = ['*'], $water = -1, $energy = -1, $protein = -1, $fat = -1, $carbohydrate = -1, $fiber = -1, $sugars = -1, $cink = -1)
+    public static function update(int $id = null, string $name = '*', array $avaiable_units = ['*'], float $water = -1, float $energy = -1, float $protein = -1, float $fat = -1, float $carbohydrate = -1, float $fiber = -1, float $sugars = -1, float $cink = -1)
     {
         if ($id != null && $id < -1) {
             return 'Bad ID';
         } else {
             $ingredient = Ingredient::find($id);
-            for($i=4;$i<count(func_get_args());$i++) {
-                if(func_get_arg($i)!=-1&&func_get_arg($i)<0) {
-                    return 'Bad Ingredient data at argument no.'.strval($i);
+
+            for ($i = 4; $i < count(func_get_args()); $i++) {
+                if (func_get_arg($i) != -1 && func_get_arg($i) < 0) {
+                    return 'Bad Ingredient data at argument no.' . strval($i);
                 }
             }
 
-            if ($name !=-1)
+            if ($name != '*')
                 $ingredient->name = $name;
 
             if ($avaiable_units != ['*']) {
                 $ingredient->avaiable_units = $avaiable_units;
             }
 
-            if ($water != -1) {
+            if ($water >= 0) {
                 $ingredient->water = $water;
             }
 
-            if ($energy !=-1) {
+            if ($energy >= 0) {
                 $ingredient->energy = $energy;
             }
 
-            if ($protein !=-1) {
+            if ($protein >= 0) {
                 $ingredient->protein = $protein;
             }
 
-            if ($fat != -1) {
+            if ($fat >= 0) {
                 $ingredient->fat = $fat;
             }
 
-            if ($carbohydrate != -1) {
+            if ($carbohydrate >= 0) {
                 $ingredient->carbohydrate = $carbohydrate;
             }
 
-            if ($fiber != -1) {
+            if ($fiber >= 0) {
                 $ingredient->fiber = $fiber;
             }
 
-            if ($sugars != -1) {
+            if ($sugars >= 0) {
                 $ingredient->sugars = $sugars;
             }
 
-            if ($cink != -1) {
+            if ($cink >= 0) {
                 $ingredient->cink = $cink;
             }
 
@@ -92,18 +95,11 @@ class IngredientModelController extends Controller
         }
     }
 
-    public static function search( $name = '*', $default_unit = "*", $avaiable_units = ['*'], $water = -1, $energy = -1, $protein = -1, $fat = -1, $carbohydrate = -1, $fiber = -1, $sugars = -1, $cink = -1)
+    public static function search(string $name = '*', array $avaiable_units = ['*'], float $water = -1, float $energy = -1, float $protein = -1, float $fat = -1, float $carbohydrate = -1, float $fiber = -1, float $sugars = -1, float $cink = -1)
     { //not very readable tbh
         $ingredients = null;
         if ($name != '*')
             $ingredients = Ingredient::where('name', $name);
-
-        if ($default_unit != '*') {
-            if ($ingredients == null)
-                $ingredients = Ingredient::where('default_unit', $default_unit);
-            else
-                $ingredients = $ingredients->where('default_unit', $default_unit);
-        }
 
         if ($avaiable_units != ['*']) {
             if ($ingredients == null)
@@ -112,56 +108,56 @@ class IngredientModelController extends Controller
                 $ingredients = $ingredients->whereJsonContains('avaiable_units', $avaiable_units);
         }
 
-        if ($water != '*') {
+        if ($water >= 0) {
             if ($ingredients == null)
                 $ingredients = Ingredient::where('water', $water);
             else
                 $ingredients = $ingredients->where('water', $water);
         }
 
-        if ($energy != '*') {
+        if ($energy >= 0) {
             if ($ingredients == null)
                 $ingredients = Ingredient::where('energy', $energy);
             else
                 $ingredients = $ingredients->where('energy', $energy);
         }
 
-        if ($protein != '*') {
+        if ($protein >= 0) {
             if ($ingredients == null)
                 $ingredients = Ingredient::where('protein', $protein);
             else
                 $ingredients = $ingredients->where('protein', $protein);
         }
 
-        if ($fat != '*') {
+        if ($fat >= 0) {
             if ($ingredients == null)
                 $ingredients = Ingredient::where('fat', $fat);
             else
                 $ingredients = $ingredients->where('fat', $fat);
         }
 
-        if ($carbohydrate != '*') {
+        if ($carbohydrate >= 0) {
             if ($ingredients == null)
                 $ingredients = Ingredient::where('carbohydrate', $carbohydrate);
             else
                 $ingredients = $ingredients->where('carbohydrate', $carbohydrate);
         }
 
-        if ($fiber != '*') {
+        if ($fiber >= 0) {
             if ($ingredients == null)
                 $ingredients = Ingredient::where('fiber', $fiber);
             else
                 $ingredients = $ingredients->where('fiber', $fiber);
         }
 
-        if ($sugars != '*') {
+        if ($sugars >= 0) {
             if ($ingredients == null)
                 $ingredients = Ingredient::where('sugars', $sugars);
             else
                 $ingredients = $ingredients->where('sugars', $sugars);
         }
 
-        if ($cink != '*') {
+        if ($cink >= 0) {
             if ($ingredients == null)
                 $ingredients = Ingredient::where('cink', $cink);
             else
@@ -172,5 +168,5 @@ class IngredientModelController extends Controller
 
         return $ingredients;
     }
-    
+
 }
