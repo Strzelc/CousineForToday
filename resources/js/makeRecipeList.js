@@ -51,7 +51,7 @@ function CreateRecipeCards(cardsProperties) {
 //Functions that retrieve data from API. Can be called outside of script 
 /////////////////////////////////
 function ShowAllRecipes() {
-    const APIurl = RootURL+"api/AllRecipes";
+    const APIurl = RootURL+"api/all-recipes";
     fetch(APIurl)
     
     .then((response) => {
@@ -64,7 +64,7 @@ function ShowAllRecipes() {
 }
 
 function ShowSearchedRecipes(form) { 
-    const APIurl =  RootURL+"api/SearchForRecipes";
+    const APIurl =  RootURL+"api/search-for-recipes";
     const RecipeListDOM = document.querySelector('.recipe-list');
     var formData=new FormData(form);
 

@@ -2,7 +2,7 @@
 @section("mainContent")
 @vite(['resources/js/addRecipe.js'])
 <div class = "main-wrapper">
-    <form method="post" action="/api/SearchForRecipe" id="formElem">
+    <form method="post" action="/api/add-recipe" id="formElem">
         <div>Title
         <input type="text" id="input-form-recipe-title" name="title">
         </div>
@@ -29,7 +29,7 @@
             </div>
         </div>
         
-        <button type="button" onclick="AddRecipe()">add recipe</button>
+        <button type="submit" onclick="AddRecipe(formElem)">add recipe</button>
     </form>
 </div>
 @endsection

@@ -19,13 +19,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 //Recipes
-Route::get('/AllRecipes', 'App\Http\Controllers\API\V1\ApiController@GetAllRecipes');
-Route::post('/SearchForRecipes','App\Http\Controllers\API\V1\ApiController@SearchForRecipes');
-Route::post('/AddRecipe','App\Http\Controllers\API\V1\ApiController@AddRecipe');
+Route::get('/all-recipes', 'App\Http\Controllers\API\V1\ApiController@GetAllRecipes');
+Route::post('/search-for-recipes','App\Http\Controllers\API\V1\ApiController@SearchForRecipes');
+Route::post('/add-recipe','App\Http\Controllers\API\V1\ApiController@AddRecipe');
 //Ingredients
-Route::get('/AllIngredientsNames', 'App\Http\Controllers\API\V1\ApiController@GetAllIngredientsNames');
-Route::post('/SearchForIngredients','App\Http\Controllers\API\V1\ApiController@SearchForIngredients');
+Route::get('/all-ingredients-names', 'App\Http\Controllers\API\V1\ApiController@GetAllIngredientsNames');
+Route::post('/search-for-ingredients','App\Http\Controllers\API\V1\ApiController@SearchForIngredients');
 Route::post('/crate-new-ingredient','App\Http\Controllers\API\V1\ApiController@CrateNewIngredient');
+Route::post('/search-for-ingredient-avaible-units','App\Http\Controllers\API\V1\ApiController@SearchForIngredientAvaibleUnits');
 //Debug
-Route::post('/Debug','App\Http\Controllers\API\V1\ApiController@Debug');
+Route::post('/debug','App\Http\Controllers\API\V1\ApiController@Debug');
 

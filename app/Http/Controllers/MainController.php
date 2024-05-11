@@ -10,6 +10,7 @@ use App\Http\Controllers\RecipeController;
 
 class MainController extends Controller
 {
+    //TODO - order controller pages
     public function showHome() {
         return redirect('/cousine');
         //return view('welcome');

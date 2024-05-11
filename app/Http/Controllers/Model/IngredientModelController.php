@@ -18,7 +18,6 @@ class IngredientModelController extends Controller
     {
         $ingredient = new Ingredient;
         $ingredient->name = $name;
-        //error_log(json_encode($avaiable_units));
         $ingredient->avaiable_units = json_encode($avaiable_units);
         $ingredient->water = $water;
         $ingredient->energy = $energy;
@@ -50,9 +49,15 @@ class IngredientModelController extends Controller
                     return 'Bad Ingredient data at argument no.' . strval($i);
                 }
             }
+            /*
+            TODO-
+            foreach( inf as args_function) {}
+            switch case argument_function_name = 
+            */
 
-            if ($name != '*')
+            if ($name != '*') {
                 $ingredient->name = $name;
+            }
 
             if ($avaiable_units != ['*']) {
                 $ingredient->avaiable_units = $avaiable_units;
@@ -89,9 +94,8 @@ class IngredientModelController extends Controller
             if ($cink >= 0) {
                 $ingredient->cink = $cink;
             }
-
-
             $ingredient->save();
+            return 'OK';
         }
     }
 

@@ -40,20 +40,22 @@ class ApiController extends Controller
     }
     public function SearchForIngredientAvaibleUnits(Request $request)
     {
-        if (!is_null($request->input('name'))) {
-            $ingredients = IngredientModelController::search(name: $request->input('name'));
-            return response()->json($ingredients);
+        if (!is_null($request->input('id'))) {
+            $avaible_units = IngredientModelController::show(id: $request->input('id'),columns:['avaible_units']);
+            return response()->json($avaible_units);
         }
     }
     public function CrateNewIngredient(Request $request)
     {
         /*
+        TODO-
         if(!is_null($request->input('avaiable_units'))) {
             $avaibleUnits = $request->input('avaiable_units');
             foreach($avaibleUnits as $unit) {
-
+                check if any unit property is wrong
             }
         }
+        ciekawe czy da się zrobić aby każda zasada była zapisywana do jakieś listy a następnie sprawdzana w tej pętli...
 */
         if(IngredientModelController::create(
             name: is_null($request->input('name')) ? '*' : $request->input('name'),

@@ -11,8 +11,9 @@
 <div class="top-bar">
     <a href='{{$rootURL . 'login'}}'>Login</a>
     <a href='{{$rootURL . 'cousine'}}'>Recipes</a>
-    <a href='{{$rootURL . 'cousine/addRecipe'}}'>Add Recipe</a>
-    <a href='{{$rootURL . 'cousine/addIngredient'}}'>Add Ingredient</a>
+    <a href='{{$rootURL . 'cousine/add-recipe'}}'>Add Recipe</a>
+    <a href='{{$rootURL . 'cousine/add-ingredient'}}'>Add Ingredient</a>
+    <a href='{{$rootURL . 'cousine/update-ingredient'}}'>Add Ingredient</a>
     <div class="messagae">{{$TopBarMessage}}</div>
 </div>
     @yield("mainContent")
