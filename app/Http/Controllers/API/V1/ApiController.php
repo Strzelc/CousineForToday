@@ -43,12 +43,19 @@ class ApiController extends Controller
     {
         if (!is_null($request->input('id'))) {
             $avaible_units = IngredientModelController::show(id: $request->input('id'),columns:['avaiable_units']);
+            if(!is_null($request->input('name'))) {
+                if($request->input('name')==$avaible_units['name']) {
+                    return response()->json($avaible_units->avaiable_units);
+                }
+                else 
+                    abort(500, 'Something went wrong');
+            }
+            else 
+                abort(500, 'Something went wrong');
             
-            error_log($avaible_units->avaiable_units);
-            return response()->json($avaible_units->avaiable_units);
+
+            
         }
-        if (is_null($request->input('id')))
-            error_log('yo');
     }
     public function CrateNewIngredient(Request $request)
     {
@@ -75,7 +82,7 @@ class ApiController extends Controller
             cink: is_null($request->input('cink')) ? 0 : $request->input('cink')
         )=="OK") 
             return view('recipeList',['TopBarMessage'=>'Created new ingredient!']);
-        }
+    }
     /////////////
     //Debug
     /////////////
