@@ -30,7 +30,8 @@ class ApiController extends Controller
     /////////////
     public function GetAllIngredientsNames()
     {
-        $ingredientsNames = IngredientModelController::index(['name']);
+        $ingredientsNames = IngredientModelController::index(['name','id']);
+        error_log($ingredientsNames);
         return response()->json($ingredientsNames);
     }
     public function SearchForIngredients(Request $request)
@@ -41,9 +42,13 @@ class ApiController extends Controller
     public function SearchForIngredientAvaibleUnits(Request $request)
     {
         if (!is_null($request->input('id'))) {
-            $avaible_units = IngredientModelController::show(id: $request->input('id'),columns:['avaible_units']);
-            return response()->json($avaible_units);
+            $avaible_units = IngredientModelController::show(id: $request->input('id'),columns:['avaiable_units']);
+            
+            error_log($avaible_units->avaiable_units);
+            return response()->json($avaible_units->avaiable_units);
         }
+        if (is_null($request->input('id')))
+            error_log('yo');
     }
     public function CrateNewIngredient(Request $request)
     {

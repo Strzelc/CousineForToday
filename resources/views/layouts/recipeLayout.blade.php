@@ -14,7 +14,7 @@
     <a href='{{$rootURL . 'cousine/add-recipe'}}'>Add Recipe</a>
     <a href='{{$rootURL . 'cousine/add-ingredient'}}'>Add Ingredient</a>
     <a href='{{$rootURL . 'cousine/update-ingredient'}}'>Add Ingredient</a>
-    <div class="messagae">{{$TopBarMessage}}</div>
+    <div class="messagae">{{$TopBarMessage ?? ''}}</div>
 </div>
     @yield("mainContent")
 </body>

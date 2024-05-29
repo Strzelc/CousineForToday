@@ -17,4 +17,7 @@ class CousinePageController extends Controller
     public function addIngredient() {
         return view('addIngredient');
     }
+    public function updateIngredient() {
+        return view("updateIngredient");
+    }
 }
