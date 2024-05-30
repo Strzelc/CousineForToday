@@ -43,19 +43,14 @@ class ApiController extends Controller
     {
         if (!is_null($request->input('id'))) {
             $avaible_units = IngredientModelController::show(id: $request->input('id'),columns:['avaiable_units']);
-            if(!is_null($request->input('name'))) {
-                if($request->input('name')==$avaible_units['name']) {
-                    return response()->json($avaible_units->avaiable_units);
-                }
-                else 
-                    abort(500, 'Something went wrong');
-            }
+            return response()->json($avaible_units->avaiable_units);
+        }
             else 
                 abort(500, 'Something went wrong');
             
 
             
-        }
+        
     }
     public function CrateNewIngredient(Request $request)
     {
