@@ -1,6 +1,7 @@
 const RootURL = document.location.origin.concat('/');
 const IngredientsList = document.getElementById('ingredients-list');
 let LoadingMessage = "Loading...";
+let ListOptionWasSelected = false;
 
 /////////////////////////////////
 //API data retrieval
@@ -126,6 +127,60 @@ function AddRecipe() {
 function ShowList(list) {
     list.hidden = false;
 }
+
+ 
+
+function InputChanged(listHTML,inputHTML) {
+    
+    let namesIndexes = SearchForListItemBySimilarName(listHTML,inputHTML.value)
+    const listItem = listHTML.getElementsByTagName("li");
+    if(namesIndexes.length > 0) {
+        [...listItem].forEach((item,index) => {
+            if(namesIndexes.includes(index))
+                item.hidden = false;
+            else
+                item.hidden = true;
+        })
+    }
+    else if(inputHTML.value==""){
+        [...listItem].forEach(item => {
+                item.hidden = false;
+        })
+    }
+    else {
+        [...listItem].forEach(item => {
+            item.hidden = true;
+        })
+    }
+
+}
+
+function SearchForListItemBySimilarName(list,name) {
+    const listItem = list.getElementsByTagName("li");
+    console.log("SearchForListItemBySimilarName");
+    console.log(listItem);
+    let foundItemsIndexes =[];
+    [...listItem].forEach((item,index) => {
+        console.log(item.innerHTML);
+        console.log(name);
+        if((item.innerHTML).includes(name)) {
+            foundItemsIndexes.push(index);
+            console.log(foundItemsIndexes);
+        }
+           
+    })
+    return foundItemsIndexes;
+}
+
+function SearchForListItemByExactName(list,name) {
+    const listItem = list.getElementsByTagName("li");
+    let foundItemsIndexes =[];
+    [...listItem].forEach((item,index) => {
+        if(item.innerHTML=name)
+            foundItemsIndexes.push(index);
+    })
+    return foundItemsIndexes;
+}
 /////////////////////////////////
 //Validation
 /////////////////////////////////
@@ -134,6 +189,7 @@ function ShowUserMistake(mistake) {
 }
 
 function ValidateIngedientEntry(name, unit, amount) {
+
     ShowUserMistake(mistake);
     return true;
 }
@@ -151,4 +207,5 @@ function ShowLoadingMessage(language) {
 window.CreateImgredientEmtry = CreateImgredientEmtry;
 window.ShowList = ShowList;
 window.GetIngredientAvaibleUnits  = GetIngredientAvaibleUnits;
+window.InputChanged = InputChanged;
 GetIngredientsNames();

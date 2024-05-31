@@ -11,7 +11,7 @@
         </div>
         <div>Ingredients
             <div>Add Ingredient
-                <input onclick="ShowList(ingredients_names_list)"/>
+                <input id="ingredients_names_input" onclick="ShowList(ingredients_names_list)" oninput="InputChanged(ingredients_names_list,ingredients_names_input)"/>
                 <ul id="ingredients_names_list" hidden>
 
                 </ul>
