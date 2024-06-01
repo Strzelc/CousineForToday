@@ -25,13 +25,13 @@ function GetIngredientsNames() {
 function GetIngredientAvaibleUnits(id) {
     console.log(id);
     const ingredientUnitsList = document.getElementById("ingredient_units_list");
-    
+
     const apiUrl = RootURL + "api/search-for-ingredient-avaible-units";
     //const apiUrl =  RootURL+"api/debug";
     console.log("JSONstringify");
-    console.log(JSON.stringify({id:id}));
+    console.log(JSON.stringify({ id: id }));
     fetch(URL = apiUrl, {
-        body: (JSON.stringify({id:id})),
+        body: (JSON.stringify({ id: id })),
         headers: {
             'Content-type': 'application/json'
         },
@@ -74,7 +74,7 @@ function FillIngredientUnitsList(units) {
     //ingredientUnitsList.removeChild(ingredientUnitsList.childNodes);
     console.log("FillIngredientUnitsList");
     console.log(units);
-    units=JSON.parse(units);
+    units = JSON.parse(units);
     console.log(units);
     if (units != null)
         if (units.length != 0) {
@@ -128,23 +128,23 @@ function ShowList(list) {
     list.hidden = false;
 }
 
- 
 
-function InputChanged(listHTML,inputHTML) {
-    
-    let namesIndexes = SearchForListItemBySimilarName(listHTML,inputHTML.value)
+
+function InputChanged(listHTML, inputHTML) {
+
+    let namesIndexes = SearchForListItemBySimilarName(listHTML, inputHTML.value)
     const listItem = listHTML.getElementsByTagName("li");
-    if(namesIndexes.length > 0) {
-        [...listItem].forEach((item,index) => {
-            if(namesIndexes.includes(index))
+    if (namesIndexes.length > 0) {
+        [...listItem].forEach((item, index) => {
+            if (namesIndexes.includes(index))
                 item.hidden = false;
             else
                 item.hidden = true;
         })
     }
-    else if(inputHTML.value==""){
+    else if (inputHTML.value == "") {
         [...listItem].forEach(item => {
-                item.hidden = false;
+            item.hidden = false;
         })
     }
     else {
@@ -155,28 +155,28 @@ function InputChanged(listHTML,inputHTML) {
 
 }
 
-function SearchForListItemBySimilarName(list,name) {
+function SearchForListItemBySimilarName(list, name) {
     const listItem = list.getElementsByTagName("li");
     console.log("SearchForListItemBySimilarName");
     console.log(listItem);
-    let foundItemsIndexes =[];
-    [...listItem].forEach((item,index) => {
+    let foundItemsIndexes = [];
+    [...listItem].forEach((item, index) => {
         console.log(item.innerHTML);
         console.log(name);
-        if((item.innerHTML).includes(name)) {
+        if ((item.innerHTML.toLowerCase()).includes(name.toLowerCase())) {
             foundItemsIndexes.push(index);
             console.log(foundItemsIndexes);
         }
-           
+
     })
     return foundItemsIndexes;
 }
 
-function SearchForListItemByExactName(list,name) {
+function SearchForListItemByExactName(list, name) {
     const listItem = list.getElementsByTagName("li");
-    let foundItemsIndexes =[];
-    [...listItem].forEach((item,index) => {
-        if(item.innerHTML=name)
+    let foundItemsIndexes = [];
+    [...listItem].forEach((item, index) => {
+        if (item.innerHTML = name)
             foundItemsIndexes.push(index);
     })
     return foundItemsIndexes;
@@ -206,6 +206,6 @@ function ShowLoadingMessage(language) {
 /////////////////////////////////
 window.CreateImgredientEmtry = CreateImgredientEmtry;
 window.ShowList = ShowList;
-window.GetIngredientAvaibleUnits  = GetIngredientAvaibleUnits;
+window.GetIngredientAvaibleUnits = GetIngredientAvaibleUnits;
 window.InputChanged = InputChanged;
 GetIngredientsNames();

@@ -20,11 +20,13 @@ class ApiController extends Controller
         $allRecipes = RecipeModelController::index(['id', 'title', 'ingredients', 'preparation', 'images_urls']);
         return response()->json($allRecipes);
     }
+
     public function SearchForRecipes(Request $request)
     {
         $recipes = RecipeModelController::search(title: $request->input('title'));
         return response()->json($recipes);
     }
+
     /////////////
     //Ingredients
     /////////////
@@ -34,11 +36,13 @@ class ApiController extends Controller
         error_log($ingredientsNames);
         return response()->json($ingredientsNames);
     }
+
     public function SearchForIngredients(Request $request)
     {
         $ingredients = IngredientModelController::search(name: $request->input('name'));
         return response()->json($ingredients);
     }
+
     public function SearchForIngredientAvaibleUnits(Request $request)
     {
         if (!is_null($request->input('id'))) {
@@ -47,11 +51,8 @@ class ApiController extends Controller
         }
             else 
                 abort(500, 'Something went wrong');
-            
-
-            
-        
     }
+
     public function CrateNewIngredient(Request $request)
     {
         /*
@@ -78,6 +79,7 @@ class ApiController extends Controller
         )=="OK") 
             return view('recipeList',['TopBarMessage'=>'Created new ingredient!']);
     }
+    
     /////////////
     //Debug
     /////////////
