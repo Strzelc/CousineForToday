@@ -24,7 +24,7 @@ function GetIngredientsNames() {
 
 function GetIngredientAvaibleUnits(id) {
     console.log(id);
-    const ingredientUnitsList = document.getElementById("ingredient_units_list");
+    const ingredientUnitsList = document.getElementById("ingredient-units-list");
 
     const apiUrl = RootURL + "api/search-for-ingredient-avaible-units";
     //const apiUrl =  RootURL+"api/debug";
@@ -53,23 +53,28 @@ function GetIngredientAvaibleUnits(id) {
 //List filling
 /////////////////////////////////
 function FillIngredientsNameList(names) {
-    const ingredientNamesList = document.getElementById("ingredients_names_list");
+    const ingredientNamesList = document.getElementById("ingredient-names-list");
+    const inputHTML = document.getElementById("ingredients-name-input");
     console.log("FillIngredientsNameList");
     console.log(names);
     if (names != null)
         if (names.length != 0) {
-            names.forEach(element => {
+            names.forEach(name => {
                 const listElem = document.createElement("li");
-                listElem.innerHTML = element.name;
-                listElem.value = element.id;
-                listElem.onclick = function () { GetIngredientAvaibleUnits(element.id); };
+                listElem.innerHTML = name.name;
+                listElem.value = name.id;
+                listElem.onclick = function () { 
+                    GetIngredientAvaibleUnits(name.id);
+                    inputHTML.value = name.name;
+                };
                 ingredientNamesList.appendChild(listElem);
             });
         }
 }
 
 function FillIngredientUnitsList(units) {
-    const ingredientUnitsList = document.getElementById("ingredient_units_list");
+    const ingredientUnitsList = document.getElementById("ingredient-units-list");
+    const inputHTML = document.getElementById("ingredients-unit-input");
     //console.log(ingredientUnitsList.childNodes);
     //ingredientUnitsList.removeChild(ingredientUnitsList.childNodes);
     console.log("FillIngredientUnitsList");
@@ -78,9 +83,12 @@ function FillIngredientUnitsList(units) {
     console.log(units);
     if (units != null)
         if (units.length != 0) {
-            units.forEach(element => {
+            units.forEach(unit => {
                 const listElem = document.createElement("li");
-                listElem.textContent = element.name;
+                listElem.textContent = unit.name;
+                listElem.onclick = function () { 
+                    inputHTML.value = unit.name;
+                };
                 ingredientUnitsList.appendChild(listElem);
             });
         }
@@ -118,6 +126,10 @@ function CreateImgredientEmtry(name, unit, amount) {
     else {
         ShowUserMistake();
     }
+}
+
+function AddIngriedient() {
+
 }
 
 function AddRecipe() {
