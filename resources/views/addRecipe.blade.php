@@ -11,18 +11,19 @@
         </div>
         <div>Ingredients
             <div>Add Ingredient
-                <input onclick="ShowList(ingredients_names_list)" oninput="InputChanged(ingredients_names_list,this)"/>
-                <ul id="ingredients_names_list" hidden>
+                <input id="ingredient-name-input" onclick="ShowList('ingredient-available-names-list')" oninput="InputChanged('ingredient-available-names-list','ingredient-name-input')"/>
+                <ul id="ingredient-available-names-list" hidden>
 
                 </ul>
 
-                <input onclick="ShowList(ingredient_units_list)" oninput="InputChanged(ingredient_units_list,this)" />
-                <ul id="ingredient_units_list"  hidden>
+                <input id="ingredient-unit-input" onclick="ShowList('ingredient-available-units-list')" oninput="InputChanged('ingredient-available-units-list','ingredient-unit-input')" />
+                <ul id="ingredient-available-units-list"  hidden>
                     
                 </ul>
-                <input type="number" name="amount" step="0.000001"/>
+                <input id="ingredient-amount-input" type="number" name="amount" step="0.000001"/>
+                <button type="button" onclick="AddIngriedient()">add ingredient to recipe</button>
             </div>
-            <button type="button" onclick="CreateImgredientEmtry()" >add ingredient to recipe</button>
+            
             <ul class="list-group" id="ingredients-list">
                 <li class="list-group-item">jj</li>
         </div>
