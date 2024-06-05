@@ -26,6 +26,8 @@
             
             <ul class="list-group" id="ingredients-list">
                 <li class="list-group-item">jj</li>
+                
+            </ul>
         </div>
 
         <button type="submit">add recipe</button>
