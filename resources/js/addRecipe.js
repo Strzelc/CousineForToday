@@ -2,8 +2,8 @@ const RootURL = document.location.origin.concat('/');
 const IngredientsList = document.getElementById('ingredients-list');
 let LoadingMessage = "Loading...";
 let ListOptionWasSelected = false;
-let SelectedNameDataIndex=null;
-let SelectedUnitDataIndex=null;
+let SelectedNameDataIndex = null;
+let SelectedUnitDataIndex = null;
 
 /////////////////////////////////
 //API data retrieval
@@ -66,7 +66,7 @@ function FillIngredientsNameList(names) {
                 listElem.textContent = name.name;
                 listElem.dataset.index = name.id;
                 listElem.dataset.selected = false;
-                listElem.onclick = function () { 
+                listElem.onclick = function () {
                     GetIngredientAvaibleUnits(name.id);
                     inputHTML.value = this.textContent;
                     document.getElementById("ingredient-unit-input").value = "";
@@ -92,7 +92,7 @@ function FillIngredientUnitsList(units) {
                 const listElem = document.createElement("li");
                 listElem.textContent = unit.name;
                 listElem.dataset.selected = false;
-                listElem.onclick = function () { 
+                listElem.onclick = function () {
                     inputHTML.value = unit.name;
                     listElem.dataset.selected = true;
                     //TODO - make list dissappear after click?
@@ -140,18 +140,34 @@ function CreateImgredientEmtry(name, unit, amount, id) {
 function AddIngriedient() {
     let name = GetIngredientName();
     let unit = GetIngredientUnit();
+    let amount = GetIngredientAmount();
+    let id = GetIngredientId();
+    if (name == null) {
+
+    }
+}
+
+function GetIngredientId() {
+
+}
+
+function GetIngredientAmount() {
     let amount = parseFloat(document.getElementById('ingredient-amount-input').textContent);
+    return (amount == NaN || amount == null) ? null : amount;
 }
 
 function GetIngredientName() {
     let inputName = document.getElementById('ingredient-name-input');
     let avaibleNamesList = document.getElementById('ingredient-available-names-list');
-    
+
     const listItems = avaibleNamesList.getElementsByTagName("li");
+
+
+
     let oneExactNameExist = false; //flag
     [...listItems].forEach(item => {
-        if(StringsAreSimilar(item.textContent,inputName)) {
-            if(oneExactNameExist)
+        if (StringsAreSimilar(item.textContent, inputName)) {
+            if (oneExactNameExist)
                 return null;
             else
                 oneExactNameExist = true;
@@ -163,23 +179,18 @@ function GetIngredientName() {
 function GetIngredientUnit() {
     let inputUnit = document.getElementById('ingredient-unit-input');
     let avaibleUnitsList = document.getElementById('ingredient-available-units-list');
-    
+
     const listItems = avaibleUnitsList.getElementsByTagName("li");
     let oneSimilarUnitExist = false; //flag
     [...listItems].forEach(item => {
-        if(StringsAreSimilar(item.textContent,inputUnit)) {
-            if(oneSimilarUnitExist)
+        if (StringsAreSimilar(item.textContent, inputUnit)) {
+            if (oneSimilarUnitExist)
                 return null;
             else
                 oneSimilarUnitExist = true;
         }
     })
     return (oneSimilarUnitExist) ? inputUnit : null;
-}
-
-
-function AddRecipe() {
-
 }
 
 function ShowList(listHTMLid) {
@@ -190,22 +201,38 @@ function ShowList(listHTMLid) {
 function InputChanged(listHTMLid, inputHTMLid) {
     let listHTML = document.getElementById(listHTMLid);
     let inputHTML = document.getElementById(inputHTMLid);
-
-    const listItems = listHTML.getElementsByTagName("li");
-    [...listItems].forEach(item => {
-        item.hidden = !StringsAreSimilar(item.textContent,inputHTML.value);
-    })
-} 
+    RevealListItemsWithSimilarTextContext(listHTML,inputHTML.value);
+}
 
 function StringsAreSimilar(string1, string2) {
     return ((string1.toLowerCase()).includes(string2.toLowerCase())) ? true : false;
 }
 
-function StringsAreTheSame(string1,string2) {
+function StringsAreTheSame(string1, string2) {
     return string1.toLowerCase() == string2.toLowerCase() ? true : false;
 }
 
-function SearchForListItemBySimilarName(list, name) {
+function RevealListItemsWithSimilarTextContext(listHTML, text) {
+    const listItems = listHTML.getElementsByTagName("li");
+    [...listItems].forEach(item => {
+        (StringsAreSimilar(item.textContent, text)) ? item.hidden = false : item.hidden = true;
+    })
+}
+
+/* function SearchForListIndexesBySimilarName(list, name) {
+    const listItems = list.getElementsByTagName("li");
+    let foundItemsIndexes = [];
+    [...listItems].forEach((item, index) => {
+        if (StringsAreSimilar(item.textContent, name)) {
+            foundItemsIndexes.push(index);
+        }
+
+    })
+    return foundItemsIndexes;
+} */
+
+
+/* function SearchForListItemBySimilarName(list, name) {
     const listItems = list.getElementsByTagName("li");
     console.log("SearchForListItemBySimilarName");
     console.log(listItems);
@@ -220,7 +247,7 @@ function SearchForListItemBySimilarName(list, name) {
 
     })
     return foundItemsIndexes;
-}
+} */
 
 function SearchForListItemByExactName(list, name) {
     const listItems = list.getElementsByTagName("li");
@@ -244,7 +271,7 @@ function ValidateIngedientEntry(name, unit, amount) {
     return true;
 }
 
-function Dummy(data,id){
+function Dummy(data, id) {
     console.log("Dummy");
     console.log(document.getElementById(id));
     console.log(document.getElementById(data));
