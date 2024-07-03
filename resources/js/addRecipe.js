@@ -4,13 +4,14 @@ let LoadingMessage = "Loading...";
 let ListOptionWasSelected = false;
 let SelectedNameDataIndex = null;
 let SelectedUnitDataIndex = null;
+let MessageToUser = "";
 
 /////////////////////////////////
 //API data retrieval
 /////////////////////////////////
 function GetIngredientsNames() {
     const apiUrl = RootURL + "api/all-ingredients-names";
-    console.log("1");
+    //console.log("1");
     fetch(apiUrl)
 
         .then((response) => {
@@ -18,20 +19,20 @@ function GetIngredientsNames() {
         })
 
         .then((data) => {
-            console.log("GetIngredientsNames");
-            console.log(data);
+            //console.log("GetIngredientsNames");
+            //console.log(data);
             FillIngredientsNameList(data);
         })
 }
 
 function GetIngredientAvaibleUnits(id) {
-    console.log(id);
+    //console.log(id);
     const ingredientUnitsList = document.getElementById("ingredient-available-units-list");
 
     const apiUrl = RootURL + "api/search-for-ingredient-avaible-units";
     //const apiUrl =  RootURL+"api/debug";
-    console.log("JSONstringify");
-    console.log(JSON.stringify({ id: id }));
+    //console.log("JSONstringify");
+    //console.log(JSON.stringify({ id: id }));
     fetch(URL = apiUrl, {
         body: (JSON.stringify({ id: id })),
         headers: {
@@ -46,8 +47,8 @@ function GetIngredientAvaibleUnits(id) {
 
         .then((data) => {
             ingredientUnitsList.replaceChildren();
-            console.log("GetIngredientAvaibleUnits");
-            console.log(data);
+            //console.log("GetIngredientAvaibleUnits");
+            //console.log(data);
             FillIngredientUnitsList(data);
         })
 }
@@ -57,8 +58,8 @@ function GetIngredientAvaibleUnits(id) {
 function FillIngredientsNameList(names) {
     const ingredientNamesList = document.getElementById("ingredient-available-names-list");
     const inputHTML = document.getElementById("ingredient-name-input");
-    console.log("FillIngredientsNameList");
-    console.log(names);
+    //console.log("FillIngredientsNameList");
+    //console.log(names);
     if (names != null)
         if (names.length != 0) {
             names.forEach(name => {
@@ -82,10 +83,10 @@ function FillIngredientUnitsList(units) {
     const inputHTML = document.getElementById("ingredient-unit-input");
     //console.log(ingredientUnitsList.childNodes);
     //ingredientUnitsList.removeChild(ingredientUnitsList.childNodes);
-    console.log("FillIngredientUnitsList");
-    console.log(units);
+    //console.log("FillIngredientUnitsList");
+    //console.log(units);
     units = JSON.parse(units);
-    console.log(units);
+    //console.log(units);
     if (units != null)
         if (units.length != 0) {
             units.forEach(unit => {
@@ -109,6 +110,19 @@ function FillIngredientUnitsList(units) {
 /////////////////////////////////
 //Site elements changes & creation
 /////////////////////////////////
+function AddIngriedient() {
+    MessageToUser = "";
+    let name = GetIngredientName();
+    let unit = GetIngredientUnit();
+    let amount = GetIngredientAmount();
+    let id = GetIngredientId();
+    if (MessageToUser == "") {
+        CreateImgredientEmtry(name, unit, amount, id);
+    }
+    else {
+        ShowMessageToUser();
+    }
+}
 function CreateImgredientEmtry(name, unit, amount, id) {
 
     const ingredientEntry = document.createElement("li");
@@ -137,15 +151,7 @@ function CreateImgredientEmtry(name, unit, amount, id) {
     }
 }
 
-function AddIngriedient() {
-    let name = GetIngredientName();
-    let unit = GetIngredientUnit();
-    let amount = GetIngredientAmount();
-    let id = GetIngredientId();
-    if (name == null) {
 
-    }
-}
 
 function GetIngredientId() {
 
@@ -160,15 +166,17 @@ function GetIngredientName() {
     let inputName = document.getElementById('ingredient-name-input');
     let avaibleNamesList = document.getElementById('ingredient-available-names-list');
 
-    const listItems = avaibleNamesList.getElementsByTagName("li");
+    const avaibleNamesListItems = avaibleNamesList.getElementsByTagName("li");
 
 
 
     let oneExactNameExist = false; //flag
-    [...listItems].forEach(item => {
-        if (StringsAreSimilar(item.textContent, inputName)) {
-            if (oneExactNameExist)
+    [...avaibleNamesListItems].forEach(avaibleNamesListItem => {
+        if (StringsAreTheSame(avaibleNamesListItem.textContent, inputName)) {
+            if (oneExactNameExist) {
+                MessageToUser += "\n•Entered name is ambiguous. Please select ingredient name from the ingrediens names list.";
                 return null;
+            }
             else
                 oneExactNameExist = true;
         }
@@ -180,17 +188,21 @@ function GetIngredientUnit() {
     let inputUnit = document.getElementById('ingredient-unit-input');
     let avaibleUnitsList = document.getElementById('ingredient-available-units-list');
 
-    const listItems = avaibleUnitsList.getElementsByTagName("li");
-    let oneSimilarUnitExist = false; //flag
-    [...listItems].forEach(item => {
-        if (StringsAreSimilar(item.textContent, inputUnit)) {
-            if (oneSimilarUnitExist)
+    const avaibleUnitsListItems = avaibleUnitsList.getElementsByTagName("li");
+    let oneExactUnitExist = false; //flag
+    [...avaibleUnitsListItems].forEach(avaibleUnitsListItem => {
+        if (StringsAreTheSame(avaibleUnitsListItem.textContent, inputUnit)) {
+            if (oneExactUnitExist)
                 return null;
             else
-                oneSimilarUnitExist = true;
+                oneExactUnitExist = true;
         }
     })
-    return (oneSimilarUnitExist) ? inputUnit : null;
+    return (oneExactUnitExist) ? inputUnit : null;
+}
+
+function ShowMessageToUser() {
+    alert(MessageToUser);
 }
 
 function ShowList(listHTMLid) {
@@ -217,6 +229,11 @@ function RevealListItemsWithSimilarTextContext(listHTML, text) {
     [...listItems].forEach(item => {
         (StringsAreSimilar(item.textContent, text)) ? item.hidden = false : item.hidden = true;
     })
+}
+
+function CreateValidationErrorMessageUnderHtmlElement(htmlElement,message) {
+    const messageHtmlElement = document.createElement
+    htmlElement.appendChild
 }
 
 /* function SearchForListIndexesBySimilarName(list, name) {
