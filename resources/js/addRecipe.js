@@ -174,7 +174,8 @@ function GetIngredientName() {
     [...avaibleNamesListItems].forEach(avaibleNamesListItem => {
         if (StringsAreTheSame(avaibleNamesListItem.textContent, inputName)) {
             if (oneExactNameExist) {
-                MessageToUser += "\n•Entered name is ambiguous. Please select ingredient name from the ingrediens names list.";
+                CreateValidationErrorMessageUnderHtmlElement(avaibleNamesList,"Entered name is ambiguous. Please select ingredient name from the ingrediens names list.")
+                //MessageToUser += "\n•Entered name is ambiguous. Please select ingredient name from the ingrediens names list.";
                 return null;
             }
             else
@@ -232,8 +233,10 @@ function RevealListItemsWithSimilarTextContext(listHTML, text) {
 }
 
 function CreateValidationErrorMessageUnderHtmlElement(htmlElement,message) {
-    const messageHtmlElement = document.createElement
-    htmlElement.appendChild
+    const messageHtmlElement = document.createElement('div');
+    message.textContent=message;
+    htmlElement.appendChild(messageHtmlElement);
+
 }
 
 /* function SearchForListIndexesBySimilarName(list, name) {

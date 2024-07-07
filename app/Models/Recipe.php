@@ -9,7 +9,6 @@ use Laravel\Scout\Searchable;
 class Recipe extends Model
 {
     use Searchable;
-    use HasFactory;
     protected $table = 'recipes';
     protected $fillable = ['title','preparation','ingredients','images_urls'];
 }
