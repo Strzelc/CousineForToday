@@ -239,6 +239,10 @@ function CreateValidationErrorMessageUnderHtmlElement(htmlElement,message) {
 
 }
 
+function foo() {
+    document.getElementById("costam").setCustomValidity("{{__('validation.accepted')}}");
+}
+
 /* function SearchForListIndexesBySimilarName(list, name) {
     const listItems = list.getElementsByTagName("li");
     let foundItemsIndexes = [];

@@ -9,12 +9,16 @@
 </head>
 <body>
 <div class="top-bar">
-    <a href='{{$rootURL . 'login'}}'>Login</a>
-    <a href='{{$rootURL . 'cousine'}}'>Recipes</a>
-    <a href='{{$rootURL . 'cousine/add-recipe'}}'>Add Recipe</a>
-    <a href='{{$rootURL . 'cousine/add-ingredient'}}'>Add Ingredient</a>
-    <a href='{{$rootURL . 'cousine/update-ingredient'}}'>Update Ingredient</a>
-    <div class="messagae">{{$TopBarMessage ?? ''}}</div>
+    <a href="{{$rootURL . 'login'}}">{{__('topBar.login')}}</a>
+    <a href="{{$rootURL . 'cousine'}}">{{__('topBar.recipes')}}</a>
+    <a href="{{$rootURL . 'cousine/add-recipe'}}">{{__('topBar.add-recipe')}}</a>
+    <a href="{{$rootURL . 'cousine/add-ingredient'}}">{{__('topBar.add-ingredient')}}</a>
+    <a href="{{$rootURL . 'cousine/update-ingredient'}}">{{__('topBar.update-ingredient')}}</a>
+    <select id="language-selection">
+        <option value="en" {{App::isLocale('en') ? 'selected':''}} >{{__('topBar.english')}}</option>
+        <option value="pl" {{App::isLocale('pl') ? 'selected':''}} >{{__('topBar.polish')}}</option>
+    </select>
+    <div class="message">{{$TopBarMessage ?? ''}}</div>
 </div>
     @yield("mainContent")
 </body>
