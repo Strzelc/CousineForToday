@@ -70,7 +70,9 @@ function FillIngredientsNameList(names) {
                 listElem.onclick = function () {
                     GetIngredientAvaibleUnits(name.id);
                     inputHTML.value = this.textContent;
+                    InputChanged('ingredient-available-names-list','ingredient-name-input');
                     document.getElementById("ingredient-unit-input").value = "";
+                    DeselectAllListItems(document.getElementById("ingredient-available-names-list"));
                     listElem.dataset.selected = true;
                 };
                 ingredientNamesList.appendChild(listElem);
@@ -108,21 +110,18 @@ function FillIngredientUnitsList(units) {
         }
 }
 /////////////////////////////////
-//Site elements changes & creation
+//Page elements creation & property changes
 /////////////////////////////////
 function AddIngriedient() {
-    MessageToUser = "";
     let name = GetIngredientName();
     let unit = GetIngredientUnit();
     let amount = GetIngredientAmount();
     let id = GetIngredientId();
-    if (MessageToUser == "") {
+    if (ValidateIngredientName(name) && ValidateIngredientUnit() && ValidateIngredientAmount(amount) && ValidateIngredientId(id)) {
         CreateImgredientEmtry(name, unit, amount, id);
     }
-    else {
-        ShowMessageToUser();
-    }
 }
+
 function CreateImgredientEmtry(name, unit, amount, id) {
 
     const ingredientEntry = document.createElement("li");
@@ -144,66 +143,7 @@ function CreateImgredientEmtry(name, unit, amount, id) {
     ingredientEntryAmount.textContent = amount;
     ingredientEntry.appendChild(ingredientEntryAmount);
 
-    if (ValidateIngedientEntry(ingredientEntryTitle.textContent, ingredientEntryUnit.textContent, ingredientEntryAmount.textContent))
-        IngredientsList.appendChild(ingredientEntry);
-    else {
-        ShowUserMistake();
-    }
-}
-
-
-
-function GetIngredientId() {
-
-}
-
-function GetIngredientAmount() {
-    let amount = parseFloat(document.getElementById('ingredient-amount-input').textContent);
-    return (amount == NaN || amount == null) ? null : amount;
-}
-
-function GetIngredientName() {
-    let inputName = document.getElementById('ingredient-name-input');
-    let avaibleNamesList = document.getElementById('ingredient-available-names-list');
-
-    const avaibleNamesListItems = avaibleNamesList.getElementsByTagName("li");
-
-
-
-    let oneExactNameExist = false; //flag
-    [...avaibleNamesListItems].forEach(avaibleNamesListItem => {
-        if (StringsAreTheSame(avaibleNamesListItem.textContent, inputName)) {
-            if (oneExactNameExist) {
-                CreateValidationErrorMessageUnderHtmlElement(avaibleNamesList,"Entered name is ambiguous. Please select ingredient name from the ingrediens names list.")
-                //MessageToUser += "\n•Entered name is ambiguous. Please select ingredient name from the ingrediens names list.";
-                return null;
-            }
-            else
-                oneExactNameExist = true;
-        }
-    })
-    return (oneExactNameExist) ? inputName : null;
-}
-
-function GetIngredientUnit() {
-    let inputUnit = document.getElementById('ingredient-unit-input');
-    let avaibleUnitsList = document.getElementById('ingredient-available-units-list');
-
-    const avaibleUnitsListItems = avaibleUnitsList.getElementsByTagName("li");
-    let oneExactUnitExist = false; //flag
-    [...avaibleUnitsListItems].forEach(avaibleUnitsListItem => {
-        if (StringsAreTheSame(avaibleUnitsListItem.textContent, inputUnit)) {
-            if (oneExactUnitExist)
-                return null;
-            else
-                oneExactUnitExist = true;
-        }
-    })
-    return (oneExactUnitExist) ? inputUnit : null;
-}
-
-function ShowMessageToUser() {
-    alert(MessageToUser);
+    IngredientsList.appendChild(ingredientEntry);
 }
 
 function ShowList(listHTMLid) {
@@ -211,10 +151,136 @@ function ShowList(listHTMLid) {
     listHTML.hidden = false;
 }
 
+function CreateValidationErrorMessageUnderHtmlElement(htmlElement, message) {
+    const messageHtmlElement = document.createElement('div');
+    messageHtmlElement.textContent = message;
+    htmlElement.appendChild(messageHtmlElement);
+}
+
+function DeselectAllListItems(list) {
+    avaibleNamesListItems = list.getElementsByTagName("li");
+    [...avaibleNamesListItems].forEach(avaibleNamesListItem => {
+        if (StringsAreTheSame(avaibleNamesListItem.textContent, ingredientName)) {
+            if (oneExactNameExist) {
+                CreateValidationErrorMessageUnderHtmlElement(avaibleNamesList, TranslatedErorMessages.ambiguousName);
+                return false;
+            }
+            else
+                oneExactNameExist = true;
+        }
+    })
+}
+/////////////////////////////////
+//Data retrieval from Html elements
+/////////////////////////////////
+function GetIngredientId() {
+    const avaibleNamesList = document.getElementById('ingredient-available-names-list');
+    const avaibleNamesListItems = avaibleNamesList.getElementsByTagName("li");
+    let selectedIndex;
+    let oneExactNameExist = false; //flag
+    [...avaibleNamesListItems].forEach(avaibleNamesListItem => {
+        if(StringsAreTheSame(avaibleNamesListItem.textContent,  GetIngredientName())) {
+            if(oneExactNameExist)
+                oneExactNameExist=false;
+            if (avaibleNamesListItem.dataset.selected == true) {
+                return avaibleNamesListItem.dataset.index;
+            }
+        }
+         
+    })
+}
+
+function GetIngredientAmount() {
+    let amount = parseFloat(document.getElementById('ingredient-amount-input').value);
+    return amount;
+}
+
+function GetIngredientName() {
+    let name = document.getElementById('ingredient-name-input').value;
+    return name;
+}
+
+function GetIngredientUnit() {
+    let unit = document.getElementById('ingredient-unit-input').value;
+    return unit;
+}
+/////////////////////////////////
+//Validation
+/////////////////////////////////
+function ValidateIngredientName(ingredientName) {
+    const avaibleNamesList = document.getElementById('ingredient-available-names-list');
+    if (ingredientName == null) {
+        CreateValidationErrorMessageUnderHtmlElement(avaibleNamesList, TranslatedErorMessages.missingName);
+        return false;
+    }
+    const avaibleNamesListItems = avaibleNamesList.getElementsByTagName("li");
+    let oneExactNameExist = false; //flag
+    [...avaibleNamesListItems].forEach(avaibleNamesListItem => {
+        if (StringsAreTheSame(avaibleNamesListItem.textContent, ingredientName)) {
+            if (oneExactNameExist) {
+                CreateValidationErrorMessageUnderHtmlElement(avaibleNamesList, TranslatedErorMessages.ambiguousName);
+                return false;
+            }
+            else
+                oneExactNameExist = true;
+        }
+    })
+
+    return oneExactNameExist;
+}
+
+function ValidateIngredientUnit(ingredientUnit) {
+    let avaibleUnitsList = document.getElementById('ingredient-available-units-list');
+    if (ingredientUnit == null) {
+        CreateValidationErrorMessageUnderHtmlElement(avaibleUnitsList, TranslatedErorMessages.missingUnit);
+        return false;
+    }
+    const avaibleUnitsListItems = avaibleUnitsList.getElementsByTagName("li");
+    let oneExactUnitExist = false; //flag
+    [...avaibleUnitsListItems].forEach(avaibleUnitsListItem => {
+        if (StringsAreTheSame(avaibleUnitsListItem.textContent, ingredientUnit)) {
+            if (oneExactUnitExist) {
+                CreateValidationErrorMessageUnderHtmlElement(avaibleUnitsList, TranslatedErorMessages.ambiguousUnit);
+                return null;
+            }
+            else
+                oneExactUnitExist = true;
+        }
+    })
+
+    return oneExactUnitExist;
+}
+
+function ValidateIngredientAmount(ingredienAmount) {
+    let ingredientAmounHtmltInput = document.getElementById('ingredient-amount-input');
+    if (ingredienAmount == null) {
+        CreateValidationErrorMessageUnderHtmlElement(ingredientAmounHtmltInput, TranslatedErorMessages.missingAmount);
+    }
+    if (ingredienAmount < 0) {
+        CreateValidationErrorMessageUnderHtmlElement(ingredientAmounHtmltInput, TranslatedErorMessages.negativeAmount);
+    }
+    return true;
+}
+
+function ValidateIngredientId(ingredienId) {
+    if(ingredienId === null) {
+        CreateValidationErrorMessageUnderHtmlElement(avaibleNamesList, TranslatedErorMessages.wrongIngredientId);
+        return false;
+    }
+    return true;
+}
+
+function ValidateIngedientEntry(name, unit, amount) {
+    
+    return true;
+}
+/////////////////////////////////
+//Utility functions
+/////////////////////////////////
 function InputChanged(listHTMLid, inputHTMLid) {
     let listHTML = document.getElementById(listHTMLid);
     let inputHTML = document.getElementById(inputHTMLid);
-    RevealListItemsWithSimilarTextContext(listHTML,inputHTML.value);
+    RevealListItemsWithSimilarTextContext(listHTML, inputHTML.value);
 }
 
 function StringsAreSimilar(string1, string2) {
@@ -232,16 +298,7 @@ function RevealListItemsWithSimilarTextContext(listHTML, text) {
     })
 }
 
-function CreateValidationErrorMessageUnderHtmlElement(htmlElement,message) {
-    const messageHtmlElement = document.createElement('div');
-    message.textContent=message;
-    htmlElement.appendChild(messageHtmlElement);
 
-}
-
-function foo() {
-    document.getElementById("costam").setCustomValidity("{{__('validation.accepted')}}");
-}
 
 /* function SearchForListIndexesBySimilarName(list, name) {
     const listItems = list.getElementsByTagName("li");
@@ -282,19 +339,16 @@ function SearchForListItemByExactName(list, name) {
     })
     return foundItemsIndexes;
 }
+
 /////////////////////////////////
-//Validation
+//Misc
 /////////////////////////////////
-function ShowUserMistake(mistake) {
-
+function foo() {
+    document.getElementById("costam").setCustomValidity("{{__('validation.accepted')}}");
 }
-
-function ValidateIngedientEntry(name, unit, amount) {
-
-    ShowUserMistake(mistake);
-    return true;
+function ShowMessageToUser() {
+    alert(MessageToUser);
 }
-
 function Dummy(data, id) {
     console.log("Dummy");
     console.log(document.getElementById(id));

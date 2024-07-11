@@ -11,6 +11,7 @@
         negativeAmount:"{{__('validation.min.numeric',['attribute'=>__('validation.attributes.amount'),'min'=>'0'])}}",
         missingPreparation:"{{__('validation.required',['attribute'=>__('validation.attributes.preparation')])}}",
         missingTitle:"{{__('validation.required',['attribute'=>__('validation.attributes.title')])}}",
+        wrongIngredientId:"{{__('validation.technical',['attribute'=>__('validation.attributes.name')])}}",
         };
 </script>
 <div class="main-wrapper">
@@ -47,7 +48,6 @@
                 
             </ul>
         </div>
-
         <button type="submit">{{__('addRecipePage.add-recipe')}}</button>
     </form>
 </div>
