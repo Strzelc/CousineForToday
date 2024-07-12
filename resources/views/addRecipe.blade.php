@@ -5,6 +5,7 @@
     window.TranslatedErorMessages={
         ambiguousName:"{{__('validation.ambiguous',['attribute'=>__('validation.attributes.name')])}}",
         missingName:"{{__('validation.required',['attribute'=>__('validation.attributes.name')])}}",
+        noMatchingName:"{{__('validation.match',['subject'=>__('validation.subjects.ingredient'),'attribute'=>__('validation.attributes.name')])}}",
         ambiguousUnit:"{{__('validation.ambiguous',['attribute'=>__('validation.attributes.unit')])}}",
         missingUnit:"{{__('validation.required',['attribute'=>__('validation.attributes.unit')])}}",
         missingAmount:"{{__('validation.required',['attribute'=>__('validation.attributes.amount')])}}",

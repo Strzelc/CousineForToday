@@ -91,6 +91,7 @@ return [
         'string' => 'The :attribute field must be less than or equal to :value characters.',
     ],
     'mac_address' => 'The :attribute field must be a valid MAC address.',
+    'match' => 'There is no :subject with that :attribute. Please enter matching :attribute',
     'max' => [
         'array' => 'The :attribute field must not have more than :max items.',
         'file' => 'The :attribute field must not be greater than :max kilobytes.',
@@ -190,7 +191,9 @@ return [
     | of "email". This simply helps us make our message more expressive.
     |
     */
-
+    'subjects' => [
+        'ingredient' => 'ingredient'
+    ],
     'attributes' => [
         'amount' => 'amount','unit'=>'unit','name'=>'name','preparation'=>'preparation','title'=>'title'
     ],
