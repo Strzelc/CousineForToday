@@ -13,6 +13,7 @@
         missingPreparation:"{{__('validation.required',['attribute'=>__('validation.attributes.preparation')])}}",
         missingTitle:"{{__('validation.required',['attribute'=>__('validation.attributes.title')])}}",
         wrongIngredientId:"{{__('validation.technical',['attribute'=>__('validation.attributes.name')])}}",
+        default:"{{__('validation.technical',['attribute'=>__('validation.attributes.name')])}}",
         };
 </script>
 <div class="main-wrapper">
