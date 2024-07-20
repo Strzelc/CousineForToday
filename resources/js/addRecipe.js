@@ -2,7 +2,7 @@ const RootURL = document.location.origin.concat('/');
 let ListOptionWasSelected = false;
 let SelectedNameDataIndex = null;
 let SelectedUnitDataIndex = null;
-let IngredientSelected = null;
+let IngredientNameSelected = null;
 let IngredientUnitSelected = null;
 
 /////////////////////////////////
@@ -73,7 +73,7 @@ function FillIngredientsNameList(names) {
                     document.getElementById("ingredient-unit-input").value = "";
                     DeselectAllListItems("ingredient-available-names-list");
                     this.dataset.selected = true;
-                    IngredientSelected = this;
+                    IngredientNameSelected = this;
                     //console.log(IngredientSelected);
                 };
                 ingredientNamesList.appendChild(listElem);
@@ -119,8 +119,9 @@ function AddIngriedient() {
     let {name, id} = GetIngredientNameAndId() || {name:null, id:null};
     console.log("id: "+id);
     console.log("name: "+name);
-    if (ValidateIngredientName(name) && ValidateIngredientUnit(unit) && ValidateIngredientAmount(amount) && ValidateIngredientId(id)) {
-        CreateImgredientEmtry(name, unit, amount, id);
+    if (ValidateIngredientName(name) && ValidateIngredientUnit(unit) && ValidateIngredientAmount(amount)) {
+        if(ValidateIngredientId(id))
+            CreateImgredientEmtry(name, unit, amount, id);
     }
 }
 
@@ -158,6 +159,10 @@ function CreateValidationErrorMessageUnderHtmlElement(htmlElement, message) {
     const messageHtmlElement = document.createElement('div');
     messageHtmlElement.textContent = message;
     htmlElement.appendChild(messageHtmlElement);
+}
+
+function RemoveAllValidationErrorMessagesUnderHtmlElement(htmlElement) {
+    htmlElement.removeChild(htmlElement.childNodes.getElementsByClassName("ERROR_MESSEGE_CLASS")); //TODO replace ERROR_MESSEGE_CLASS with valid error message class
 }
 
 function DeselectAllListItems(listName) {
@@ -199,43 +204,43 @@ function GetIngredientAmount() {
     return amount;
 }
 
-/* function GetIngredientName() {
-    let name = document.getElementById('ingredient-name-input').value;
-    return name;
-} */
-
 function GetIngredientUnit() {
     let unit = document.getElementById('ingredient-unit-input').value;
     return unit;
 }
-
-function GetIngredientNameAndId() { //unfinished
-   if(IngredientSelected!=null)
-        return {"id":IngredientSelected.dataset.index,"name":IngredientSelected.textContent};
+/**
+ * Retrieves ingredient name and id. If unsuccessful returns null.
+ * @returns name of ingredient and its id. Format: dict {"name": name, "id": id}
+ */
+function GetIngredientNameAndId() { 
+   if(IngredientNameSelected!=null)
+        return {"id":IngredientNameSelected.dataset.index,"name":IngredientNameSelected.textContent};
    const avaibleNamesList = document.getElementById('ingredient-available-names-list');
    const avaibleNamesListItems = avaibleNamesList.getElementsByTagName("li");
    const ingredientNameFromInput = document.getElementById('ingredient-name-input').value;
    let onlyOneItemMatch=false;
    let matchingItem=null;
-   console.log("co");
-   [...avaibleNamesListItems].forEach(avaibleNamesListItem => {
-    if(StringsAreTheSame(avaibleNamesListItem.textContent,ingredientNameFromInput)) {
-        console.log("if");
-        if(onlyOneItemMatch)
-        {
-            console.log("null???");
-            return null;
+   
+   let inputNameIsAmbiguous = [...avaibleNamesListItems].some(avaibleNamesListItem => {
+        if(StringsAreTheSame(avaibleNamesListItem.textContent,ingredientNameFromInput)) {
+            console.log("if");
+            if(onlyOneItemMatch)
+            {
+                console.log("null???");
+                return true;
+            }
+            else {
+                console.log("onlyOneItemMatch=true");
+                onlyOneItemMatch=true;
+                matchingItem=avaibleNamesListItem;
+            }
+                
         }
-        else {
-            console.log("onlyOneItemMatch=true");
-            onlyOneItemMatch=true;
-            matchingItem=avaibleNamesListItem;
-        }
-            
-    }
     
     });
-    console.log("what???");
+    if(inputNameIsAmbiguous)
+        return null;
+
     if(onlyOneItemMatch)
         return {"id":matchingItem.dataset.index,"name":matchingItem.textContent};
     else
@@ -249,20 +254,23 @@ function ValidateIngredientName(ingredientName) {
     console.log('name validation');
     const avaibleNamesList = document.getElementById('ingredient-available-names-list');
     const ingredientNameFromInput = document.getElementById('ingredient-name-input').value;
-
     if(ingredientNameFromInput=='')
     {
         CreateValidationErrorMessageUnderHtmlElement(avaibleNamesList,TranslatedErorMessages.missingName);
         return false;
     }
+    if(IngredientNameSelected!=null) {
+        if(IngredientNameSelected.textContent==ingredientName) 
+            return true;
+    }
+    
 
     const avaibleNamesListItems = avaibleNamesList.getElementsByTagName("li");
     let onlyOneItemMatch = false;
-    [...avaibleNamesListItems].forEach(avaibleNamesListItem => {
+    let inputNameIsAmbiguous = [...avaibleNamesListItems].some(avaibleNamesListItem => {
         if(StringsAreTheSame(avaibleNamesListItem.textContent,ingredientNameFromInput)) {
             if(onlyOneItemMatch) { 
-                CreateValidationErrorMessageUnderHtmlElement(avaibleNamesList,TranslatedErorMessages.ambiguousName);
-                return false;
+                return true;
             }
             else
                 onlyOneItemMatch=true;
@@ -270,12 +278,18 @@ function ValidateIngredientName(ingredientName) {
             
     })
 
+    if(inputNameIsAmbiguous) {
+        CreateValidationErrorMessageUnderHtmlElement(avaibleNamesList,TranslatedErorMessages.ambiguousName);
+        return false;
+    }
+        
+
     if(!onlyOneItemMatch) {
         CreateValidationErrorMessageUnderHtmlElement(avaibleNamesList,TranslatedErorMessages.noMatchingName);
         return false;
     }
 
-    if(ingredientName==null) {
+    if(ingredientName==null) { //if dont know why name hasnt been retrieved
         CreateValidationErrorMessageUnderHtmlElement(avaibleNamesList,TranslatedErorMessages.default);
         return false;
     }
@@ -334,7 +348,7 @@ function ValidateIngredientId(ingredienId) {
 function InputChanged(listHTMLid, inputHTMLid) {
     let listHTML = document.getElementById(listHTMLid);
     let inputHTML = document.getElementById(inputHTMLid);
-    IngredientSelected=null;
+    IngredientNameSelected=null;
     RevealListItemsWithThisTextContext(listHTML, inputHTML.value);
     DeselectAllListItems(listHTML.id);
 }
