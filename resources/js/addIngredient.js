@@ -1,12 +1,12 @@
 const RootURL = document.location.origin.concat('/');
 const Form = document.getElementById("main-form");
-const allUnitsDiv = Form.querySelector('#all-units');
+const AllUnitsDiv = Form.querySelector('#all-units');
 
 function AddUnitToForm() {
     //const currUnitCount = allUnitsDiv.childElementCount;
     const unitDiv =  document.createElement("div");
     unitDiv.name = "unit-div";
-    allUnitsDiv.appendChild(unitDiv);
+    AllUnitsDiv.appendChild(unitDiv);
     const ingredientName = document.createElement("input");
     ingredientName.type = "text";
     ingredientName.name = 'name';
@@ -28,7 +28,7 @@ function RemoveUnitFromForm(unitDiv) {
 
 function OrderUnitsPropertiesNames () {
     let i = 0;
-    for(let unitDiv of allUnitsDiv.children) {
+    for(let unitDiv of AllUnitsDiv.children) {
         unitDiv.querySelector('input[name="name"]').name='avaiable_units['+ i +'][name]';
         unitDiv.querySelector('input[name="conversion_rate"]').name='avaiable_units['+ i +'][conversion_rate]';
         i++;

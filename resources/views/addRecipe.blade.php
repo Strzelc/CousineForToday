@@ -8,12 +8,13 @@
         noMatchingName:"{{__('validation.match',['subject'=>__('validation.subjects.ingredient'),'attribute'=>__('validation.attributes.name')])}}",
         ambiguousUnit:"{{__('validation.ambiguous',['attribute'=>__('validation.attributes.unit')])}}",
         missingUnit:"{{__('validation.required',['attribute'=>__('validation.attributes.unit')])}}",
+        noMatchingUnit:"{{__('validation.match',['subject'=>__('validation.subjects.ingredient'),'attribute'=>__('validation.attributes.unit')])}}",
         missingAmount:"{{__('validation.required',['attribute'=>__('validation.attributes.amount')])}}",
         negativeAmount:"{{__('validation.min.numeric',['attribute'=>__('validation.attributes.amount'),'min'=>'0'])}}",
         missingPreparation:"{{__('validation.required',['attribute'=>__('validation.attributes.preparation')])}}",
         missingTitle:"{{__('validation.required',['attribute'=>__('validation.attributes.title')])}}",
         wrongIngredientId:"{{__('validation.technical',['attribute'=>__('validation.attributes.name')])}}",
-        default:"{{__('validation.technical',['attribute'=>__('validation.attributes.name')])}}",
+        default:"{{__('validation.technical',['attribute'=>__('validation.attributes.cock')])}}",
         };
 </script>
 <div class="main-wrapper">

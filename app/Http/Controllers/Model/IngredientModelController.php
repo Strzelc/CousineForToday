@@ -39,9 +39,10 @@ class IngredientModelController extends Controller
 
     public static function update(int $id = null, string $name = '*', array $avaiable_units = ['*'], float $water = -1, float $energy = -1, float $protein = -1, float $fat = -1, float $carbohydrate = -1, float $fiber = -1, float $sugars = -1, float $cink = -1)
     {
-        if ($id != null && $id < -1) {
+        if ($id == null || $id < 1) {
             return 'Bad ID';
-        } else {
+        } 
+        else {
             $ingredient = Ingredient::find($id);
 
             for ($i = 4; $i < count(func_get_args()); $i++) {

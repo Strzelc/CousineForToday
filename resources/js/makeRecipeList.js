@@ -48,7 +48,7 @@ function CreateRecipeCards(cardsProperties) {
     RecipeListDOM.style.width=100*(RecipeListDOM.children.length)+'%';
 }
 /////////////////////////////////
-//Functions that retrieve data from API. Can be called outside of script 
+//Functions that retrieve data from API
 /////////////////////////////////
 function ShowAllRecipes() {
     const APIurl = RootURL+"api/all-recipes";
