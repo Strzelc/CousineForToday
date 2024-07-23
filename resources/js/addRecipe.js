@@ -1,7 +1,10 @@
 const RootURL = document.location.origin.concat('/');
 //Html elements
 const IngredientAvaibleUnitsList = document.getElementById("ingredient-available-units-list");
-
+const IngredientAvaibleNamesList = document.getElementById("ingredient-available-names-list");
+const IngredientNameHtmlInput = document.getElementById("ingredient-name-input");
+const IngredientUnitHtmlInput = document.getElementById("ingredient-unit-input");
+const IngredientAmountHtmlInput = document.getElementById('ingredient-amount-input');
 //Flags
 let ListOptionWasSelected = false;
 let SelectedNameDataIndex = null;
@@ -40,7 +43,6 @@ function GetIngredientAvaibleUnits(id) {
         })
 
         .then((data) => {
-            IngredientAvaibleUnitsList.replaceChildren();
             FillIngredientUnitsList(data);
         })
 }
@@ -48,7 +50,6 @@ function GetIngredientAvaibleUnits(id) {
 //List filling
 /////////////////////////////////
 function FillIngredientsNameList(names) {
-    const ingredientNamesList = document.getElementById("ingredient-available-names-list");
     const inputHTML = document.getElementById("ingredient-name-input");
     if (names != null)
         if (names.length != 0) {
@@ -58,21 +59,22 @@ function FillIngredientsNameList(names) {
                 listElem.dataset.index = name.id;
                 listElem.dataset.selected = false;
                 listElem.onclick = function () {
-                    GetIngredientAvaibleUnits(name.id);
+                    GetIngredientAvaibleUnits(this.dataset.index);
                     inputHTML.value = this.textContent;
                     InputChanged('ingredient-available-names-list','ingredient-name-input');
                     document.getElementById("ingredient-unit-input").value = "";
-                    DeselectAllListItems("ingredient-available-names-list");
+                    DeselectAllListItems(IngredientAvaibleUnitsList.id);
                     this.dataset.selected = true;
                     IngredientNameSelected = this;
                     //console.log(IngredientSelected);
                 };
-                ingredientNamesList.appendChild(listElem);
+                IngredientAvaibleNamesList.appendChild(listElem);
             });
         }
 }
 
 function FillIngredientUnitsList(units) {
+    IngredientAvaibleUnitsList.replaceChildren();
     const inputHTML = document.getElementById("ingredient-unit-input");
     units = JSON.parse(units);
     if (units != null)
@@ -102,8 +104,6 @@ function AddIngriedient() {
     let amount = GetIngredientAmount();
     let unit = GetIngredientUnit();
     let {name, id} = GetIngredientNameAndId() || {name:null, id:null};
-    console.log("id: "+id);
-    console.log("name: "+name);
     if (ValidateIngredientName(name) && ValidateIngredientUnit(unit) && ValidateIngredientAmount(amount)) {
         if(ValidateIngredientId(id))
             CreateImgredientEmtry(name, unit, amount, id);
@@ -119,16 +119,19 @@ function CreateImgredientEmtry(name, unit, amount, id) {
     const ingredientEntryTitle = document.createElement("h5");
     //ingredientEntryTitle.classList.add("recipe-card-title"); 
     ingredientEntryTitle.textContent = name;
+    ingredientEntryTitle.name = "title";
     ingredientEntry.appendChild(ingredientEntryTitle);
 
     const ingredientEntryUnit = document.createElement("h5");
     //ingredientEntryTitle.classList.add("recipe-card-title"); 
     ingredientEntryUnit.textContent = unit;
+    ingredientEntryUnit.name = "unit";
     ingredientEntry.appendChild(ingredientEntryUnit);
 
     const ingredientEntryAmount = document.createElement("h5");
     //ingredientEntryTitle.classList.add("recipe-card-title"); 
     ingredientEntryAmount.textContent = amount;
+    ingredientEntryAmount.name = "amount";
     ingredientEntry.appendChild(ingredientEntryAmount);
 
     const ingredientsList = document.getElementById('ingredients-list');
@@ -138,6 +141,23 @@ function CreateImgredientEmtry(name, unit, amount, id) {
 function ShowList(listHTMLid) {
     const listHTML = document.getElementById(listHTMLid);
     listHTML.hidden = false;
+    FillHtmlListBasedOnRelatedHtmlList(listHTML);
+}
+/**
+ * Fill specified html list based on related html list.
+ * @param {HTMLElement} listHTML 
+ */
+function FillHtmlListBasedOnRelatedHtmlList(listHTML) {
+    if(listHTML==IngredientAvaibleUnitsList) {
+        let {name, id} = GetIngredientNameAndId() || {name:null, id:null};
+        console.log("FillHtmlListBasedOnRelatedHtmlList");
+        console.log("name: "+name);
+        console.log("id: "+id);
+        if(ValidateIngredientName(name) && ValidateIngredientId(id))
+            GetIngredientAvaibleUnits(id);
+        else 
+            CreateValidationErrorMessageUnderHtmlElement(IngredientAvaibleUnitsList,TranslatedErorMessages.invalidName)
+    }
 }
 
 function CreateValidationErrorMessageUnderHtmlElement(htmlElement, message) {
@@ -152,22 +172,28 @@ function RemoveAllValidationErrorMessagesUnderHtmlElement(htmlElement) {
 
 function DeselectAllListItems(listName) {
     const list = document.getElementById(listName);
-    const avaibleNamesListItems = list.getElementsByTagName("li");
-    [...avaibleNamesListItems].forEach(avaibleNamesListItem => {
-        avaibleNamesListItem.dataset.selected=false;
+    const listItems = list.getElementsByTagName("li");
+    [...listItems].forEach(listItem => {
+        listItem.dataset.selected=false;
     })
 }
 /////////////////////////////////
 //Data retrieval from Html elements
 /////////////////////////////////
+function GetRecipeTitle() {
+    return  document.getElementById("recipe-title-input").value;
+}
+
+function GetRecipePreparation() {
+    return  document.getElementById("recipe-preparation-input").value;
+}
 function GetIngredientAmount() {
     let amount = parseFloat(document.getElementById('ingredient-amount-input').value);
     return amount;
 }
 
 function GetIngredientUnit() {
-    let unit = document.getElementById('ingredient-unit-input').value;
-    return unit;
+    return IngredientUnitHtmlInput.value;
 }
 /**
  * Retrieves ingredient name and id. If unsuccessful returns null.
@@ -177,14 +203,12 @@ function GetIngredientNameAndId() {
    if(IngredientNameSelected!=null)
         return {"id":IngredientNameSelected.dataset.index,"name":IngredientNameSelected.textContent};
 
-   const avaibleNamesList = document.getElementById('ingredient-available-names-list');
-   const avaibleNamesListItems = avaibleNamesList.getElementsByTagName("li");
-   const ingredientNameFromInput = document.getElementById('ingredient-name-input').value;
+   const ingredientAvaibleNamesListItems = IngredientAvaibleNamesList.getElementsByTagName("li");
 
    let onlyOneItemMatch=false;
    let matchingItem=null;
-   let inputNameIsAmbiguous = [...avaibleNamesListItems].some(avaibleNamesListItem => {
-        if(StringsAreTheSame(avaibleNamesListItem.textContent,ingredientNameFromInput)) {
+   let inputNameIsAmbiguous = [...ingredientAvaibleNamesListItems].some(avaibleNamesListItem => {
+        if(StringsAreTheSame(avaibleNamesListItem.textContent,IngredientNameHtmlInput.value)) {
             if(onlyOneItemMatch)
             {
                 return true;
@@ -208,20 +232,34 @@ function GetIngredientNameAndId() {
 /////////////////////////////////
 //Validation
 /////////////////////////////////
+function ValidateRecipeTitle(title) {
+    const recipeTitleHtmlDiv = document.getElementById("recipe-title");
+    if(title==null||title=='') {
+        CreateValidationErrorMessageUnderHtmlElement(recipeTitleHtmlDiv,TranslatedErorMessages.missingTitle);
+        return false;
+    }
+    return true;
+}
+
+function ValidateRecipePreparation(preparation) {
+    const recipePreparationHtmlDiv = document.getElementById("recipe-title");
+    if(preparation==null||preparation=='') {
+        CreateValidationErrorMessageUnderHtmlElement(recipePreparationHtmlDiv,TranslatedErorMessages.missingPreparation);
+        return false;
+    }
+    return true;
+}
 /**
  * 
  * @param {string} ingredientName 
  * @returns 
  */
 function ValidateIngredientName(ingredientName) {
-    console.log('name '+ingredientName);
-    console.log('name validation');
-    const avaibleNamesList = document.getElementById('ingredient-available-names-list');
-    const ingredientNameFromInput = document.getElementById('ingredient-name-input').value;
-
-    if(ingredientNameFromInput=='')
+    console.log("validateIngName");
+    console.log(IngredientNameHtmlInput.value);
+    if(IngredientNameHtmlInput.value=='')
     {
-        CreateValidationErrorMessageUnderHtmlElement(avaibleNamesList,TranslatedErorMessages.missingName);
+        CreateValidationErrorMessageUnderHtmlElement(IngredientAvaibleNamesList,TranslatedErorMessages.missingName);
         return false;
     }
 
@@ -230,10 +268,10 @@ function ValidateIngredientName(ingredientName) {
             return true;
     }
 
-    const avaibleNamesListItems = avaibleNamesList.getElementsByTagName("li");
+    const ingredientAvaibleNamesListItems = IngredientAvaibleNamesList.getElementsByTagName("li");
     let onlyOneItemMatch = false;
-    let inputNameIsAmbiguous = [...avaibleNamesListItems].some(avaibleNamesListItem => {
-        if(StringsAreTheSame(avaibleNamesListItem.textContent,ingredientNameFromInput)) {
+    let inputNameIsAmbiguous = [...ingredientAvaibleNamesListItems].some(ingredientAvaibleNamesListItem => {
+        if(StringsAreTheSame(ingredientAvaibleNamesListItem.textContent,IngredientNameHtmlInput.value)) {
             if(onlyOneItemMatch) { 
                 return true;
             }
@@ -244,18 +282,18 @@ function ValidateIngredientName(ingredientName) {
     })
 
     if(inputNameIsAmbiguous) {
-        CreateValidationErrorMessageUnderHtmlElement(avaibleNamesList,TranslatedErorMessages.ambiguousName);
+        CreateValidationErrorMessageUnderHtmlElement(IngredientAvaibleNamesList,TranslatedErorMessages.ambiguousName);
         return false;
     }
         
 
     if(!onlyOneItemMatch) {
-        CreateValidationErrorMessageUnderHtmlElement(avaibleNamesList,TranslatedErorMessages.noMatchingName);
+        CreateValidationErrorMessageUnderHtmlElement(IngredientAvaibleNamesList,TranslatedErorMessages.noMatchingName);
         return false;
     }
 
     if(ingredientName==null) { //if dont know why name hasnt been retrieved
-        CreateValidationErrorMessageUnderHtmlElement(avaibleNamesList,TranslatedErorMessages.default);
+        CreateValidationErrorMessageUnderHtmlElement(IngredientAvaibleNamesList,TranslatedErorMessages.default);
         return false;
     }
 
@@ -264,8 +302,7 @@ function ValidateIngredientName(ingredientName) {
 }
 
 function ValidateIngredientUnit(ingredientUnit) {
-    const ingredientUnitFromInput = document.getElementById('ingredient-unit-input').value;
-    if (ingredientUnitFromInput == '') {
+    if (IngredientUnitHtmlInput.value == '') {
         CreateValidationErrorMessageUnderHtmlElement(IngredientAvaibleUnitsList, TranslatedErorMessages.missingUnit);
         return false;
     }
@@ -302,18 +339,21 @@ function ValidateIngredientUnit(ingredientUnit) {
 }
 
 function ValidateIngredientAmount(ingredienAmount) {
-    let ingredientAmounHtmltInput = document.getElementById('ingredient-amount-input');
-    if (ingredientAmounHtmltInput == null) {
-        CreateValidationErrorMessageUnderHtmlElement(ingredientAmounHtmltInput, TranslatedErorMessages.missingAmount);
+    console.log("ValidateIngredientAmount");
+    console.log(ingredienAmount);
+    let ingredienAmountFromHtmlInput = IngredientAmountHtmlInput.value; 
+    const ingredientAmountHtmlDiv = document.getElementById("ingredient-amount");
+    if (ingredienAmountFromHtmlInput == null || ingredienAmountFromHtmlInput == '') {
+        CreateValidationErrorMessageUnderHtmlElement(ingredientAmountHtmlDiv, TranslatedErorMessages.missingAmount);
         return false;
     }
     if (ingredienAmount < 0) {
-        CreateValidationErrorMessageUnderHtmlElement(ingredientAmounHtmltInput, TranslatedErorMessages.negativeAmount);
+        CreateValidationErrorMessageUnderHtmlElement(ingredientAmountHtmlDiv, TranslatedErorMessages.negativeAmount);
         return false;
     }
 
     if(ingredienAmount==null) { //if dont know why anount hasnt been retrieved
-        CreateValidationErrorMessageUnderHtmlElement(ingredientAmounHtmltInput,TranslatedErorMessages.default);
+        CreateValidationErrorMessageUnderHtmlElement(ingredientAmountHtmlDiv,TranslatedErorMessages.default);
         return false;
     }
 
@@ -321,9 +361,8 @@ function ValidateIngredientAmount(ingredienAmount) {
 }
 
 function ValidateIngredientId(ingredienId) {
-    const avaibleNamesList = document.getElementById('ingredient-available-names-list');
     if(ingredienId==null) { //if dont know why id hasnt been retrieved
-        CreateValidationErrorMessageUnderHtmlElement(avaibleNamesList,TranslatedErorMessages.default);
+        CreateValidationErrorMessageUnderHtmlElement(IngredientAvaibleNamesList,TranslatedErorMessages.default);
         return false;
     }
     
@@ -339,14 +378,24 @@ function InputChanged(listHTMLid, inputHTMLid) {
     IngredientNameSelected=null;
     RevealListItemsWithThisTextContext(listHTML, inputHTML.value);
     DeselectAllListItems(listHTML.id);
+    if(listHTML==IngredientAvaibleNamesList) {
+        IngredientAvaibleUnitsList.replaceChildren();
+        IngredientUnitHtmlInput.value = '';
+    }
 }
 
 function StringsAreSimilar(string1, string2) {
-    return ((string1.toLowerCase()).includes(string2.toLowerCase())) ? true : false;
+    if(string1!=null && string2!=null)
+        return ((string1.toLowerCase()).includes(string2.toLowerCase())) ? true : false;
+    else
+        return string1==string2 ? true : false;
 }
 
 function StringsAreTheSame(string1, string2) {
-    return string1.toLowerCase() == string2.toLowerCase() ? true : false;
+    if(string1!=null && string2!=null)
+        return string1.toLowerCase() == string2.toLowerCase() ? true : false;
+    else
+        return string1==string2 ? true : false;
 }
 
 function RevealListItemsWithThisTextContext(listHTML, text) {
@@ -398,9 +447,57 @@ function SearchForListItemByExactName(list, name) {
     return foundItemsIndexes;
 }
 
+function GetAllIngredients() {
+    let ingredientList = document.getElementById("ingredients-list");
+    let ingredientListItems = ingredientList.getElementsByTagName("li");
+    let ingredientsJson=[];
+    [...ingredientListItems].forEach(ingredientListItem => {
+        ingredientsJson.push({
+            id:ingredientListItem.dataset.index,
+            title: ingredientListItem.children[0].textContent,
+            unit: ingredientListItem.children[1].textContent,
+            amount: ingredientListItem.children[2].textContent
+        })
+    });
+    return ingredientsJson;
+}
+
 /////////////////////////////////
 //Misc
 /////////////////////////////////
+function AddRecipe() { //unfisnihed
+    let recipeIngredients = GetAllIngredients();
+    let recipeTitle = GetRecipeTitle();
+    let recipePreparation = GetRecipePreparation();
+    if(ValidateRecipePreparation(recipePreparation)&&ValidateRecipeTitle(recipeTitle)) {
+        const apiUrl = RootURL + "api/add-recipe";
+        document.createElement("div");
+        fetch(URL = apiUrl, {
+        body: (JSON.stringify({ recipeTitle: recipeTitle, recipePreparation: recipePreparation, recipeIngredients: recipeIngredients })),
+        headers: {
+            'Content-type': 'application/json'
+        },
+        method: "POST"
+        })
+
+        .then((response) => {
+            return (response.ok) ? response : null
+        })
+
+        .then((resp) => {
+            //if(resp==201) 
+                //redirection or smth?
+        })
+    }
+    else {
+        CreateValidationErrorMessageUnderHtmlElement();
+    }
+}
+
+function SendRecipeDataToAPI(recipeTitle, recipePreparation, recipeIngredients) {
+
+}
+
 function foo() {
     
 }
@@ -418,4 +515,6 @@ window.ShowList = ShowList;
 window.GetIngredientAvaibleUnits = GetIngredientAvaibleUnits;
 window.InputChanged = InputChanged;
 window.AddIngriedient = AddIngriedient;
+window.AddRecipe =AddRecipe;
 GetIngredientsNames();
+window.GetAllIngredients = GetAllIngredients;

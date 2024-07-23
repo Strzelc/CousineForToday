@@ -6,6 +6,7 @@
         ambiguousName:"{{__('validation.ambiguous',['attribute'=>__('validation.attributes.name')])}}",
         missingName:"{{__('validation.required',['attribute'=>__('validation.attributes.name')])}}",
         noMatchingName:"{{__('validation.match',['subject'=>__('validation.subjects.ingredient'),'attribute'=>__('validation.attributes.name')])}}",
+        invalidName:"{{__('validation.invalid',['attribute'=>__('validation.attributes.name'),'curr_attribute'=>__('validation.attributes.unit'),'subject'=>__('validation.subjects.ingredient')])}}",
         ambiguousUnit:"{{__('validation.ambiguous',['attribute'=>__('validation.attributes.unit')])}}",
         missingUnit:"{{__('validation.required',['attribute'=>__('validation.attributes.unit')])}}",
         noMatchingUnit:"{{__('validation.match',['subject'=>__('validation.subjects.ingredient'),'attribute'=>__('validation.attributes.unit')])}}",
@@ -19,11 +20,11 @@
 </script>
 <div class="main-wrapper">
     <form method="post" action="/api/add-recipe" id="formElem">
-        <div>{{__('addRecipePage.title')}}
-            <input type="text" id="input-form-recipe-title" name="title">
+        <div id="recipe-title">{{__('addRecipePage.title')}}
+            <input type="text" id="recipe-title-input" name="title">
         </div>
-        <div>{{__('addRecipePage.preparation')}}
-            <input type="text" id="input-form-recipe-preparation" name="preparation">
+        <div id="recipe-preparations">{{__('addRecipePage.preparation')}}
+            <input type="text" id="recipe-preparation-input" name="preparation">
         </div>
         <div>{{__('addRecipePage.ingredients')}}
             <div>{{__('addRecipePage.add-ingredient')}}
@@ -47,11 +48,10 @@
                 <button type="button" onclick="AddIngriedient()">{{__('addRecipePage.add-ingredient-to-recipe')}}</button>
             </div>
             <ul class="list-group" id="ingredients-list">
-                <li class="list-group-item">jj</li>
                 
             </ul>
         </div>
-        <button type="submit">{{__('addRecipePage.add-recipe')}}</button>
+        <button type="button" onclick="AddRecipe()">{{__('addRecipePage.add-recipe')}}</button>
     </form>
 </div>
 @endsection
