@@ -30,8 +30,6 @@
             <div>{{__('addRecipePage.add-ingredient')}}
                 <div id="ingredient-name">
                     <input id="ingredient-name-input" onclick="ShowList('ingredient-available-names-list')" oninput="InputChanged('ingredient-available-names-list','ingredient-name-input')"/>
-                    
-                    <div></div>
                     <ul id="ingredient-available-names-list" hidden>
 
                     </ul>
@@ -51,7 +49,7 @@
                 
             </ul>
         </div>
-        <button type="button" onclick="AddRecipe()">{{__('addRecipePage.add-recipe')}}</button>
+        <button id="recipe-save-button" type="button" onclick="AddRecipe()">{{__('addRecipePage.add-recipe')}}</button>
     </form>
 </div>
 @endsection
