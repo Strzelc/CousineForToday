@@ -27,6 +27,17 @@ class ApiController extends Controller
         return response()->json($recipes);
     }
 
+    public function CreateNewRecipe(Request $request)
+    {
+        if(RecipeModelController::create(
+            title: is_null($request->input('title')) ? null : $request->input('title'),
+            preparation: is_null($request->input('preparation')) ? null : $request->input('preparation'),
+            ingredients: is_null($request->input('ingredients')) ? null: $request->input('ingredients'),
+            imagesUrls: is_null($request->input('imagesUrls')) ? null : $request->input('imagesUrls'),
+        )==201) 
+            return view('recipeList',['TopBarMessage'=>'Crated new recipe!']);
+    }
+
     /////////////
     //Ingredients
     /////////////
@@ -66,8 +77,8 @@ class ApiController extends Controller
         ciekawe czy da się zrobić aby każda zasada była zapisywana do jakieś listy a następnie sprawdzana w tej pętli...
 */
         if(IngredientModelController::create(
-            name: is_null($request->input('name')) ? '*' : $request->input('name'),
-            avaiable_units: is_null($request->input('avaiable_units')) ? ['*'] : $request->input('avaiable_units'),
+            name: is_null($request->input('name')) ? null : $request->input('name'),
+            avaiable_units: is_null($request->input('avaiable_units')) ? null : $request->input('avaiable_units'),
             water: is_null($request->input('water')) ? 0 : $request->input('water'),
             energy: is_null($request->input('energy')) ? 0 : $request->input('energy'),
             protein: is_null($request->input('protein')) ? 0 : $request->input('protein'),

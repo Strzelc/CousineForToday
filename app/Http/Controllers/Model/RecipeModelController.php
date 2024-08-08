@@ -13,13 +13,49 @@ class RecipeModelController extends Controller
         return $recipes;
     }
 
-    public static function create($title='*',$preparation='*',$ingredients=['*'],$imagesUrls=['*']) {
+    public static function create(string $title='*',string $preparation='*',array $ingredients=['*'],array $imagesUrls=['*']) {
         $recipe = new Recipe;
-        $recipe->title=$title;
-        $recipe->preparation=$preparation;
-        $recipe->ingredients=$ingredients;
-        $recipe->imagesUrls=$imagesUrls;
-        $recipe->save();
+
+        if(is_null($title)||$title=='*') 
+            return 400;
+        else 
+            $recipe->title=$title;
+        
+        if(is_null($preparation)||$preparation=='*') 
+            return 400;
+        else 
+            $recipe->title=$title;
+        
+        if(is_null($ingredients)||$ingredients==['*']) 
+            return 400;
+        else 
+            $recipe->preparation=$preparation; 
+
+        if(is_null($imagesUrls)||$imagesUrls==['*']) 
+            return 400;
+        else {
+            foreach ($ingredients as $ingredient){
+                //sp,e stiff to be done
+                //$ingredient
+            }
+
+            //$recipe->ingredients=$ingredients;
+        }
+            
+
+        if(is_null($imagesUrls)||$imagesUrls==['*']) 
+            return 400;
+        else {
+            $recipe->imagesUrls=$imagesUrls;
+        }
+            
+
+        if($recipe->save()) {
+            return 201;
+        }
+        else {
+            return 422;
+        }
     }
 
     public static function show($id,$columns = ['*']) {
